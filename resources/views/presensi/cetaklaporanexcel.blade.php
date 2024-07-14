@@ -24,11 +24,11 @@
             font-weight: bold;
         }
 
-        .tabeldatakaryawan {
+        .tabeldataguru{
             margin-top: 40px;
         }
 
-        .tabeldatakaryawan tr td {
+        .tabeldataguru tr td {
             padding: 5px;
         }
 
@@ -101,34 +101,34 @@
                 </td>
             </tr>
         </table>
-        <table class="tabeldatakaryawan">
+        <table class="tabeldataguru">
             <tr>
                 <td rowspan="6">
                 </td>
             </tr>
             <tr>
-                <td>NIK</td>
+                <td>NUPTK</td>
                 <td>:</td>
-                <td>{{ $karyawan->nik }}</td>
+                <td>{{ $guru->nuptk }}</td>
             </tr>
             <tr>
                 <td>Nama</td>
                 <td>:</td>
-                <td>{{ $karyawan->nama_lengkap }}</td>
+                <td>{{ $guru->nama_lengkap }}</td>
             <tr>
                 <td>Jabatan</td>
                 <td>:</td>
-                <td>{{ $karyawan->jabatan }}</td>
+                <td>{{ $guru->jabatan }}</td>
             </tr>
             <tr>
                 <td>Departemen</td>
                 <td>:</td>
-                <td>{{ $karyawan->nama_dept }}</td>
+                <td>{{ $guru->nama_dept }}</td>
             </tr>
             <tr>
                 <td>Telepon</td>
                 <td>:</td>
-                <td>{{ $karyawan->no_hp }}</td>
+                <td>{{ $guru->no_hp }}</td>
             </tr>
         </table>
         <table class="tabelpresensi">

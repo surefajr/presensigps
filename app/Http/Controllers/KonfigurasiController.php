@@ -126,16 +126,16 @@ class KonfigurasiController extends Controller
         }
     }
 
-    public function setjamkerja($nik)
+    public function setjamkerja($nuptk)
     {
-        $karyawan = DB::table('karyawan')->where('nik',$nik)->first();
+        $guru = DB::table('guru')->where('nuptk',$nuptk)->first();
         $jamkerja = DB::table('jam_kerja')->orderBy('nama_jam_kerja')->get();
-        $cekjamkerja = DB::table('konfigurasi_jamkerja')->where('nik',$nik)->count();
+        $cekjamkerja = DB::table('konfigurasi_jamkerja')->where('nuptk',$nuptk)->count();
         if ($cekjamkerja > 0) {
-            $setjamkerja = DB::table('konfigurasi_jamkerja')->where('nik',$nik)->get();
-            return view('konfigurasi.editsetjamkerja',compact('karyawan','jamkerja','setjamkerja'));
+            $setjamkerja = DB::table('konfigurasi_jamkerja')->where('nuptk',$nuptk)->get();
+            return view('konfigurasi.editsetjamkerja',compact('guru','jamkerja','setjamkerja'));
         }else{
-            return view('konfigurasi.setjamkerja',compact('karyawan','jamkerja'));
+            return view('konfigurasi.setjamkerja',compact('guru','jamkerja'));
         }
 
 
@@ -144,34 +144,34 @@ class KonfigurasiController extends Controller
 
     public function storesetjamkerja(Request $request)
     {
-        $nik = $request-> nik;
+        $nuptk = $request-> nuptk;
         $hari = $request-> hari;
         $kode_jam_kerja = $request-> kode_jam_kerja;
 
         for ($i = 0 ; $i <count($hari) ; $i++) {
             $data[]=[
-                'nik'=> $nik,
+                'nuptk'=> $nuptk,
                 'hari'=> $hari[$i],
                 'kode_jam_kerja'=> $kode_jam_kerja[$i]
             ];
         }
         try {
             Setjamkerja::insert($data);
-            return redirect('/karyawan')->with(['success'=> 'Jam Kerja Berhasil Di Setting']);
+            return redirect('/guru')->with(['success'=> 'Jam Kerja Berhasil Di Setting']);
         } catch (\Exception $e) {
-            return redirect('/karyawan')->with(['warning'=> 'Jam Kerja Gagal Di Setting']);
+            return redirect('/guru')->with(['warning'=> 'Jam Kerja Gagal Di Setting']);
         }
     }
 
     public function updatesetjamkerja(Request $request)
     {
-        $nik = $request-> nik;
+        $nuptk = $request-> nuptk;
         $hari = $request-> hari;
         $kode_jam_kerja = $request-> kode_jam_kerja;
 
         for ($i = 0 ; $i <count($hari) ; $i++) {
             $data[]=[
-                'nik'=> $nik,
+                'nuptk'=> $nuptk,
                 'hari'=> $hari[$i],
                 'kode_jam_kerja'=> $kode_jam_kerja[$i]
             ];
@@ -179,13 +179,13 @@ class KonfigurasiController extends Controller
 
         DB::beginTransaction();
         try {
-            DB::table('konfigurasi_jamkerja')->where('nik',$nik)->delete();
+            DB::table('konfigurasi_jamkerja')->where('nuptk',$nuptk)->delete();
             Setjamkerja::insert($data);
             DB::commit();
-            return redirect('/karyawan')->with(['success'=> 'Jam Kerja Berhasil Di Update']);
+            return redirect('/guru')->with(['success'=> 'Jam Kerja Berhasil Di Update']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect('/karyawan')->with(['warning'=> 'Jam Kerja Gagal Di Update']);
+            return redirect('/guru')->with(['warning'=> 'Jam Kerja Gagal Di Update']);
         }
     }
 }

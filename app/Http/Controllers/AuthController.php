@@ -6,31 +6,42 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Guru;
 
 
 class AuthController extends Controller
 {
     public function proseslogin(Request $request)
-    {
+{
+    $username = $request->username;
+    $password = $request->password;
 
-        if (Auth::guard('karyawan')->attempt(['nik' => $request -> nik, 'password' => $request->password])) {
-            return redirect('/dashboard');
-        }else {
-            return redirect ('/')->with (['warning'=> 'NUPTK atau Password Salah']);
-        }
+    // Ambil data guru berdasarkan NUPTK
+    $guru = Guru::where('username', $username)->first();
+
+    // Verifikasi password
+    if ($guru && $guru->password == $password) {
+        // Jika password cocok, autentikasi berhasil
+        Auth::guard('guru')->login($guru);
+        return redirect('/dashboard');
+    } else {
+        // Jika password tidak cocok atau Username tidak ditemukan
+        return redirect('/')->with(['warning' => 'Username atau Password Salah']);
     }
+}
+
 
     public function proseslogout()
     {
-        if(Auth::guard('karyawan')->check()){
-            Auth::guard('karyawan')->logout();
+        if (Auth::guard('guru')->check()) {
+            Auth::guard('guru')->logout();
             return redirect('/');
         }
     }
 
     public function proseslogoutadmin()
     {
-        if(Auth::guard('user')->check()){
+        if (Auth::guard('user')->check()) {
             Auth::guard('user')->logout();
             return redirect('/panel');
         }
@@ -38,11 +49,12 @@ class AuthController extends Controller
 
     public function prosesloginadmin(Request $request)
     {
+        $credentials = ['email' => $request->email, 'password' => $request->password];
 
-        if (Auth::guard('user')->attempt(['email' => $request ->email, 'password' => $request->password])) {
+        if (Auth::guard('user')->attempt($credentials)) {
             return redirect('/panel/dashboardadmin');
-        }else {
-            return redirect ('/panel')->with (['warning'=> 'Email atau Password Salah']);
+        } else {
+            return redirect('/panel')->with(['warning' => 'Email atau Password Salah']);
         }
     }
 

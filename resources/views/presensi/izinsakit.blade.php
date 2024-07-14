@@ -6,7 +6,7 @@
                 <div class="col">
                     <!-- Page pre-title -->
                     <h2 class="page-title">
-                        Persetujuan Izin
+                        Pengajuan Izin
                     </h2>
                 </div>
             </div>
@@ -89,8 +89,8 @@
                                             <path d="M7 16l10 0" />
                                         </svg>
                                     </span>
-                                    <input type="text" value="{{ Request('nik') }}" id="nik" class="form-control"
-                                        placeholder="NUPTK" name="nik">
+                                    <input type="text" value="{{ Request('nuptk') }}" id="nuptk" class="form-control"
+                                        placeholder="NUPTK" name="nuptk">
                                 </div>
                             </div>
                             <div class="col-3">
@@ -171,7 +171,7 @@
                                             <td>{{ $d->kode_izin }}</td>
                                             <td>{{ date('d-m-Y', strtotime($d->tgl_izin_dari)) }} s/d
                                                 {{ date('d-m-Y', strtotime($d->tgl_izin_sampai)) }}</td>
-                                            <td>{{ $d->nik }}</td>
+                                            <td>{{ $d->nuptk }}</td>
                                             <td>{{ $d->nama_lengkap }}</td>
                                             <td>{{ $d->jabatan }}</td>
                                             <td>

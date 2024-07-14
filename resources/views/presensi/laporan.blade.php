@@ -41,11 +41,11 @@
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="nik">Pilih Guru</label>
-                                            <select name="nik" id="nik" class="form-select">
+                                            <label for="nuptk">Pilih Guru</label>
+                                            <select name="nuptk" id="nuptk" class="form-select">
                                                 <option value="">Pilih Guru</option>
-                                                @foreach ($karyawan as $d)
-                                                    <option value="{{ $d->nik }}">{{ $d->nama_lengkap }}</option>
+                                                @foreach ($guru as $d)
+                                                    <option value="{{ $d->nuptk }}">{{ $d->nama_lengkap }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -105,7 +105,7 @@
             $("#frmlaporan").submit(function(e) {
                 var tanggal_mulai = $("#tanggal_mulai").val();
                 var tanggal_selesai = $("#tanggal_selesai").val();
-                var nik = $("#nik").val();
+                var nuptk = $("#nuptk").val();
                 if (tanggal_mulai == "") {
                     swal.fire({
                         title: 'Warning',
@@ -126,14 +126,14 @@
                         $("#tanggal_selesai").focus();
                     });
                     return false;
-                } else if (nik == "") {
+                } else if (nuptk == "") {
                     swal.fire({
                         title: 'Warning',
-                        text: 'Karyawan harus dipilih',
+                        text: 'Guru harus dipilih',
                         icon: 'warning',
                         confirmButtonText: 'OK'
                     }).then((result) => {
-                        $("#nik").focus();
+                        $("#nuptk").focus();
                     });
                     return false;
                 }

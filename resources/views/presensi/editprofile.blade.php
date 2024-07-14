@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="POST" enctype="multipart/form-data"
+    <form action="/presensi/{{ $guru->nuptk }}/updateprofile" method="POST" enctype="multipart/form-data"
         style="margin-top: 70px;">
         @csrf
         <div class="col">
@@ -40,13 +40,13 @@
             <div class="col">
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <input type="text" class="form-control" value="{{ $karyawan->nama_lengkap }}" name="nama_lengkap"
+                        <input type="text" class="form-control" value="{{ $guru->nama_lengkap }}" name="nama_lengkap"
                             placeholder="Nama Lengkap" autocomplete="off">
                     </div>
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <input type="text" class="form-control" value="{{ $karyawan->no_hp }}" name="no_hp"
+                        <input type="text" class="form-control" value="{{ $guru->no_hp }}" name="no_hp"
                             placeholder="No. HP" autocomplete="off">
                     </div>
                 </div>

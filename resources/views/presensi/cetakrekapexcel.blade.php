@@ -24,11 +24,11 @@
             font-weight: bold;
         }
 
-        .tabeldatakaryawan {
+        .tabeldataguru {
             margin-top: 40px;
         }
 
-        .tabeldatakaryawan tr td {
+        .tabeldataguru tr td {
             padding: 5px;
         }
 
@@ -100,8 +100,8 @@
         </table>
         <table class="tabelpresensi">
             <tr>
-                <th rowspan="2">NIK</th>
-                <th rowspan="2">Nama Karyawan</th>
+                <th rowspan="2">NUPTK</th>
+                <th rowspan="2">Nama Guru</th>
                 <th colspan="31">Tanggal</th>
                 <th rowspan="2">TH</th>
                 <th rowspan="2">TT</th>
@@ -117,7 +117,7 @@
             </tr>
             @foreach ($rekap as $d)
                 <tr>
-                    <td>{{ $d->nik }}</td>
+                    <td>{{ $d->nuptk }}</td>
                     <td>{{ $d->nama_lengkap }}</td>
 
                     <?php

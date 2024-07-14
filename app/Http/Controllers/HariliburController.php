@@ -84,55 +84,55 @@ class HariliburController extends Controller
         }
     }
 
-    public function setkaryawanlibur($kode_libur)
+    public function setgurulibur($kode_libur)
     {
         $harilibur = DB::table('harilibur')->where('kode_libur',$kode_libur)->first();
-        return view('harilibur.setkaryawanlibur',compact('harilibur'));
+        return view('harilibur.setgurulibur',compact('harilibur'));
     }
 
-    public function setlistkaryawanlibur($kode_libur)
+    public function setlistgurulibur($kode_libur)
     {
 
-        return view('harilibur.setlistkaryawanlibur',compact('kode_libur'));
+        return view('harilibur.setlistgurulibur',compact('kode_libur'));
     }
 
-    public function getsetlistkaryawanlibur($kode_libur)
+    public function getsetlistgurulibur($kode_libur)
     {
         $harilibur = DB::table('harilibur')->where('kode_libur',$kode_libur)->first();
-        $karyawan = DB::table('karyawan')
-        ->select('karyawan.*','hariliburdetail.nik as ceknik')
+        $guru = DB::table('guru')
+        ->select('guru.*','hariliburdetail.nuptk as ceknuptk')
         ->leftJoin(DB::raw("(
 
-            SELECT nik FROM harilibur_detail
+            SELECT nuptk FROM harilibur_detail
             WHERE kode_libur = '$kode_libur'
             )hariliburdetail"),
 
 
         function($join){
-            $join->on('karyawan.nik','=','hariliburdetail.nik');
+            $join->on('guru.nuptk','=','hariliburdetail.nuptk');
         }
     )
         ->orderBy('nama_lengkap')
         ->get();
-        return view('harilibur.getsetlistkaryawanlibur',compact('karyawan','kode_libur'));
+        return view('harilibur.getsetlistgurulibur',compact('guru','kode_libur'));
     }
 
-    public function storekaryawanlibur(Request $request)
+    public function storegurulibur(Request $request)
     {
         try {
             $cek = DB::table('harilibur_detail')
                 ->where('kode_libur', $request->kode_libur)
-                ->where('nik', $request->nik)
+                ->where('nuptk', $request->nuptk)
                 ->count();
 
             if ($cek > 0) {
-                // Karyawan sudah ada dalam daftar libur
+                // Guru sudah ada dalam daftar libur
                 return response()->json(['status' => 'duplicate']);
             }
 
             DB::table('harilibur_detail')->insert([
                 'kode_libur' => $request->kode_libur,
-                'nik' => $request->nik,
+                'nuptk' => $request->nuptk,
             ]);
 
             // Operasi penyisipan berhasil
@@ -144,12 +144,12 @@ class HariliburController extends Controller
     }
 
 
-    public function batalkanliburkaryawan(Request $request)
+    public function batalkanliburguru(Request $request)
     {
         try {
         DB::table('harilibur_detail')
         ->where('kode_libur',$request->kode_libur)
-        ->where('nik',$request->nik)
+        ->where('nuptk',$request->nuptk)
         ->delete();
             return 0;
         } catch (\Exception $e) {
@@ -157,13 +157,13 @@ class HariliburController extends Controller
         }
     }
 
-    public function getkaryawanlibur($kode_libur)
+    public function getgurulibur($kode_libur)
 {
-    $karyawanlibur = DB::table('harilibur_detail')
-        ->join('karyawan', 'harilibur_detail.nik', '=', 'karyawan.nik')
+    $gurulibur = DB::table('harilibur_detail')
+        ->join('guru', 'harilibur_detail.nuptk', '=', 'guru.nuptk')
         ->where('kode_libur', $kode_libur)
         ->get(); 
-    return view('harilibur.getkaryawanlibur', compact('karyawanlibur', 'kode_libur'));
+    return view('harilibur.getgurulibur', compact('gurulibur', 'kode_libur'));
 }
 
 }

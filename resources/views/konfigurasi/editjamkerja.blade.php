@@ -13,6 +13,7 @@
                         <path d="M13 8h3a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h3" />
                     </svg>
                 </span>
+                <label for="kode_jam_kerja">Kode Jam Kerja</label>
                 <input type="text" id="kode_jam_kerja_edit" value="{{ $jamkerja->kode_jam_kerja }}"
                     class="form-control" placeholder="Kode Jam Kerja" name="kode_jam_kerja">
             </div>
@@ -233,7 +234,6 @@
             var total_jam = $("#total_jam_edit").val();
 
             if (kode_jam_kerja == "") {
-                // alert('Nik Harus Di Isi');
                 Swal.fire({
                     title: 'Warning!',
                     text: 'Kode Jam Kerja Harus di isi !!',

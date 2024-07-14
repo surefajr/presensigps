@@ -51,13 +51,13 @@
 
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    {{--  <form action="/karyawan" method="GET">
+                                    {{--  <form action="/guru" method="GET">
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <input type="text" name="nama_karyawan" id="nama_karyawan"
-                                                        class="form-control" placeholder="Nama Karyawan"
-                                                        value="{{ Request::input('nama_karyawan') }}">
+                                                    <input type="text" name="nama_guru" id="nama_guru
+                                                        class="form-control" placeholder="Nama Guru"
+                                                        value="{{ Request::input('nama_guru') }}">
                                                 </div>
                                             </div>
 
@@ -107,7 +107,7 @@
                                                                     kode_libur="{{ $d->kode_libur }}">
                                                                     Edit
                                                                 </a>
-                                                                <a href="/konfigurasi/harilibur/{{ $d->kode_libur }}/setkaryawanlibur"
+                                                                <a href="/konfigurasi/harilibur/{{ $d->kode_libur }}/setgurulibur"
                                                                     class="btn btn-success btn-sm ml-2">
                                                                     + Guru Libur
                                                                 </a>

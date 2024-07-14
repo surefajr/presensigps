@@ -1,15 +1,15 @@
 <form action="" method="POST" id="formKoreksipresensi">
     @csrf
-    <input type="hidden" name="nik" value="{{ $karyawan->nik }}">
+    <input type="hidden" name="nuptk" value="{{ $guru->nuptk }}">
     <input type="hidden" name="tanggal" value="{{ $tanggal }}">
     <table class="table">
         <tr>
-            <td>NIK</td>
-            <td>{{ $karyawan->nik }}</td>
+            <td>NUPTK</td>
+            <td>{{ $guru->nuptk }}</td>
         </tr>
         <tr>
             <td>Nama</td>
-            <td>{{ $karyawan->nama_lengkap }}</td>
+            <td>{{ $guru->nama_lengkap }}</td>
         </tr>
         <tr>
             <td>Tanggal Presensi</td>

@@ -6,7 +6,7 @@ use App\Models\Harilibur;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\IzinabsenController;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-Route::middleware(['guest:karyawan'])->group(function (){
+Route::middleware(['guest:guru'])->group(function (){
     Route::get('/', function () {
         return view('auth.login');
     }) ->name('login');
@@ -34,7 +34,7 @@ Route::middleware(['guest:user'])->group(function (){
     Route::post('/prosesloginadmin', [AuthController::class,'prosesloginadmin']);
 });
 
-Route::middleware(['auth:karyawan'])->group(function (){
+Route::middleware(['auth:guru'])->group(function (){
     Route::get('/dashboard',[DashboardController::class,'index']);
     Route::get('/proseslogout',[AuthController::class,'proseslogout']);
 
@@ -44,7 +44,7 @@ Route::middleware(['auth:karyawan'])->group(function (){
 
     //Edit Profile
     Route::get('/editprofile',[PresensiController::class,'editprofile']);
-    Route::post('/presensi/{nik}/updateprofile',[PresensiController::class,'updateprofile']);
+    Route::post('/presensi/{nuptk}/updateprofile',[PresensiController::class,'updateprofile']);
 
     //histori
     Route::get('/presensi/histori',[PresensiController::class,'histori']);
@@ -87,20 +87,15 @@ Route::group(['middleware' => ['role:administator|administator 2,user']], functi
     Route::get('/proseslogoutadmin',[AuthController::class,'proseslogoutadmin']);
     Route::get('/panel/dashboardadmin',[DashboardController::class,'dashboardadmin']);
 
-    //karyawan
-    Route::get('/karyawan',[KaryawanController::class,'index']);
-    Route::post('/karyawan/store',[KaryawanController::class,'store']);
-    Route::post('/karyawan/edit',[KaryawanController::class,'edit']);
-    Route::post('/karyawan/{nik}/update',[KaryawanController::class,'update']);
-    Route::post('/karyawan/{nik}/delete',[KaryawanController::class,'delete']);
-    Route::get('/karyawan/{nik}/resetpassword',[KaryawanController::class,'resetpassword']);
+    //guru
+    Route::get('/guru',[GuruController::class,'index']);
+    Route::post('/guru/store',[GuruController::class,'store']);
+    Route::post('/guru/edit',[GuruController::class,'edit']);
+    Route::post('/guru/{nuptk}/update',[GuruController::class,'update']);
+    Route::post('/guru/{nuptk}/delete',[GuruController::class,'delete']);
+    Route::get('/guru/{nuptk}/resetpassword',[GuruController::class,'resetpassword']);
 
-    //Departemen
-    Route::get('/departemen',[DepartemenController::class,'index']);
-    Route::post('/departemen/store',[DepartemenController::class,'store']);
-    Route::post('/departemen/edit',[DepartemenController::class,'edit']);
-    Route::post('/departemen/{kode_dept}/update',[DepartemenController::class,'update']);
-    Route::post('/departemen/{kode_dept}/delete',[DepartemenController::class,'delete']);
+   
 
     //Presensi
     Route::get('/presensi/monitoring',[PresensiController::class,'monitoring']);
@@ -126,7 +121,7 @@ Route::group(['middleware' => ['role:administator|administator 2,user']], functi
     Route::post('/konfigurasi/editjamkerja',[KonfigurasiController::class,'editjamkerja']);
     Route::post('/konfigurasi/updatejamkerja',[KonfigurasiController::class,'updatejamkerja']);
     Route::post('/konfigurasi/{kode_jam_kerja}/delete',[KonfigurasiController::class,'deletejamkerja']);
-    Route::get('/konfigurasi/{nik}/setjamkerja',[KonfigurasiController::class,'setjamkerja']);
+    Route::get('/konfigurasi/{nuptk}/setjamkerja',[KonfigurasiController::class,'setjamkerja']);
     Route::post('/konfigurasi/storesetjamkerja',[KonfigurasiController::class,'storesetjamkerja']);
     Route::post('/konfigurasi/updatesetjamkerja',[KonfigurasiController::class,'updatesetjamkerja']);
 
@@ -144,12 +139,12 @@ Route::group(['middleware' => ['role:administator|administator 2,user']], functi
      Route::post('/konfigurasi/harilibur/edit',[HariliburController::class,'edit']);
      Route::post('/konfigurasi/harilibur/{kode_libur}/update',[HariliburController::class,'update']);
      Route::post('/konfigurasi/harilibur/{kode_libur}/delete',[HariliburController::class,'delete']);
-     Route::get('/konfigurasi/harilibur/{kode_libur}/setkaryawanlibur',[HariliburController::class,'setkaryawanlibur']);
-     Route::get('/konfigurasi/harilibur/{kode_libur}/setlistkaryawanlibur',[HariliburController::class,'setlistkaryawanlibur']);
-     Route::get('/konfigurasi/harilibur/{kode_libur}/getsetlistkaryawanlibur',[HariliburController::class,'getsetlistkaryawanlibur']);
-     Route::post('/konfigurasi/harilibur/storekaryawanlibur',[HariliburController::class,'storekaryawanlibur']);
-     Route::post('/konfigurasi/harilibur/batalkanliburkaryawan',[HariliburController::class,'batalkanliburkaryawan']);
-     Route::get('/konfigurasi/harilibur/{kode_libur}/getkaryawanlibur',[HariliburController::class,'getkaryawanlibur']);
+     Route::get('/konfigurasi/harilibur/{kode_libur}/setgurulibur',[HariliburController::class,'setgurulibur']);
+     Route::get('/konfigurasi/harilibur/{kode_libur}/setlistgurulibur',[HariliburController::class,'setlistgurulibur']);
+     Route::get('/konfigurasi/harilibur/{kode_libur}/getsetlistgurulibur',[HariliburController::class,'getsetlistgurulibur']);
+     Route::post('/konfigurasi/harilibur/storegurulibur',[HariliburController::class,'storegurulibur']);
+     Route::post('/konfigurasi/harilibur/batalkanliburguru',[HariliburController::class,'batalkanliburguru']);
+     Route::get('/konfigurasi/harilibur/{kode_libur}/getgurulibur',[HariliburController::class,'getgurulibur']);
 
 
 
@@ -170,7 +165,7 @@ Route::group(['middleware' => ['role:administator|administator 2,user']], functi
 //Route::group(['middleware' => ['role:administator,user']], function () {
 
 
-        //karyawan
+        //guru
 
 
 
@@ -181,7 +176,7 @@ Route::group(['middleware' => ['role:administator|administator 2,user']], functi
     Route::get('/createrolepermission',function(){
         try {
             Role::create(['name' => 'administator 2']);
-            //Permission::create(['name' => 'view-karyawan']);
+            //Permission::create(['name' => 'view-guru']);
             //Permission::create(['name' => 'view-departemen']);
             echo "Sukses";
         } catch (\Exception $e) {

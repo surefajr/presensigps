@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\PointLocation;
 
 use App\Models\Pengajuanizin;
-use App\Models\Karyawan;
+use App\Models\Guru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -53,14 +53,14 @@ class PresensiController extends Controller
     {
         $hariini = date("Y-m-d");
         $namahari = $this->gethari();
-        $nik = Auth::guard('karyawan')->user()->nik;
-        $presensi = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nik',$nik);
+        $nuptk = Auth::guard('guru')->user()->nuptk;
+        $presensi = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nuptk',$nuptk);
         $cek = $presensi->count();
         $datapresensi = $presensi->first();
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
         $jamkerja = DB::table('konfigurasi_jamkerja')
             ->join('jam_kerja','konfigurasi_jamkerja.kode_jam_kerja','=','jam_kerja.kode_jam_kerja')
-            ->where('nik',$nik)->where('hari',$namahari)->first();
+            ->where('nuptk',$nuptk)->where('hari',$namahari)->first();
 
 
             if($datapresensi != null && $datapresensi->status != "h"){
@@ -74,7 +74,7 @@ class PresensiController extends Controller
     }
 
     public function store(Request $request){
-        $nik = Auth::guard('karyawan')->user()->nik;
+        $nuptk = Auth::guard('guru')->user()->nuptk;
         $tgl_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
@@ -91,9 +91,9 @@ class PresensiController extends Controller
         //cek jam kerja
         $jamkerja = DB::table('konfigurasi_jamkerja')
             ->join('jam_kerja','konfigurasi_jamkerja.kode_jam_kerja','=','jam_kerja.kode_jam_kerja')
-            ->where('nik',$nik)->where('hari',$namahari)->first();
+            ->where('nuptk',$nuptk)->where('hari',$namahari)->first();
 
-        $presensi = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik',$nik);
+        $presensi = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nuptk',$nuptk);
         $cek = $presensi->count();
         $datapresensi = $presensi->first();
         if($cek > 0 ){
@@ -103,7 +103,7 @@ class PresensiController extends Controller
         }
         $image = $request->image;
         $folderPath ="public/uploads/absensi/";
-        $formatName = $nik ."-" . $tgl_presensi . "-" . $ket;
+        $formatName = $nuptk ."-" . $tgl_presensi . "-" . $ket;
         $image_parts = explode(";base64",$image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
@@ -124,7 +124,7 @@ class PresensiController extends Controller
                     'foto_out' => $fileName,
                     'lokasi_out' => $lokasi,
                 ];
-                $update = DB::table('presensi')->where('tgl_presensi',$tgl_presensi)->where('nik',$nik)->update($data_pulang);
+                $update = DB::table('presensi')->where('tgl_presensi',$tgl_presensi)->where('nuptk',$nuptk)->update($data_pulang);
                 if($update){
                     echo "success|Hati-Hati Dijalan|out";
                     Storage::put($file, $image_base64);
@@ -142,7 +142,7 @@ class PresensiController extends Controller
                     echo "error|Maaf waktu untuk absen sudah habis|in";
                 }else{
                     $data = [
-                    'nik' => $nik,
+                    'nuptk' => $nuptk,
                     'tgl_presensi' => $tgl_presensi,
                     'jam_in'  => $jam,
                     'foto_in' => $fileName,
@@ -180,55 +180,53 @@ class PresensiController extends Controller
     }
 
     public function editprofile(){
-        $nik = Auth::guard('karyawan')->user()->nik;
-        $karyawan = DB::table('karyawan')->where('nik',$nik)->first();
+        $nuptk = Auth::guard('guru')->user()->nuptk;
+        $guru = DB::table('guru')->where('nuptk',$nuptk)->first();
 
-        return view ('presensi.editprofile',compact('karyawan'));
+        return view ('presensi.editprofile',compact('guru'));
     }
 
-    public function updateprofile(Request $request)
-    {
-        $nik = Auth::guard('karyawan')->user()->nik;
-        $nama_lengkap = $request->nama_lengkap;
-        $no_hp = $request->no_hp;
-        $password = Hash::make($request->password);
-        $karyawan = DB::table('karyawan')->where('nik',$nik)->first();
-        $request -> validate([
-            'foto' => 'image|mimes:png,jpg|max:5120'
-        ]);
-        if($request->hasFile('foto')){
-            $foto = $nik . "." . $request->file('foto')->getClientOriginalExtension();
-        }else{
-            $foto = $karyawan->foto;
-        }
+    public function updateProfile(Request $request)
+{
+    $nuptk = Auth::guard('guru')->user()->nuptk;
+    $nama_lengkap = $request->nama_lengkap;
+    $no_hp = $request->no_hp;
+    $password = $request->password; // Ambil password tanpa hashing
+    $guru = DB::table('guru')->where('nuptk', $nuptk)->first();
 
-        if(empty($request->password)){
-            $data =[
-                'nama_lengkap' => $nama_lengkap,
-                'no_hp'=> $no_hp,
-                'foto' => $foto
-            ];
-        }else{
-            $data =[
-                'nama_lengkap' => $nama_lengkap,
-                'no_hp'=> $no_hp,
-                'password' => $password,
-                'foto' => $foto
-            ];
-        }
+    $request->validate([
+        'foto' => 'image|mimes:png,jpg|max:5120'
+    ]);
 
-        $update = DB::table('karyawan')->where ('nik',$nik)->update($data);
-        if($update){
-            if ($request->hasFile('foto')) {
-                $folderPath ='public/uploads/karyawan/';
-                $request->file('foto')->storeAs($folderPath,$foto);
-            }
-            return Redirect::back()->with(['success'=> 'Data berhasil Diperbarui']);
-        }else{
-            return Redirect::back()->with(['error'=> 'Data gagal Diperbarui']);
-        }
-
+    if ($request->hasFile('foto')) {
+        $foto = $nuptk . "." . $request->file('foto')->getClientOriginalExtension();
+    } else {
+        $foto = $guru->foto;
     }
+
+    $data = [
+        'nama_lengkap' => $nama_lengkap,
+        'no_hp' => $no_hp,
+        'foto' => $foto
+    ];
+
+    if (!empty($password)) {
+        $data['password'] = $password; // Simpan password tanpa hashing
+    }
+
+    $update = DB::table('guru')->where('nuptk', $nuptk)->update($data);
+
+    if ($update) {
+        if ($request->hasFile('foto')) {
+            $folderPath = 'public/uploads/guru/';
+            $request->file('foto')->storeAs($folderPath, $foto);
+        }
+        return Redirect::back()->with(['success' => 'Data berhasil diperbarui']);
+    } else {
+        return Redirect::back()->with(['error' => 'Data gagal diperbarui']);
+    }
+}
+
 
     public function histori(){
         $namabulan =
@@ -239,14 +237,14 @@ class PresensiController extends Controller
     public function gethistori(Request $request) {
         $tanggal_mulai = $request->tanggal_mulai;
         $tanggal_selesai = $request->tanggal_selesai;
-        $nik = Auth::guard('karyawan')->user()->nik;
+        $nuptk = Auth::guard('guru')->user()->nuptk;
     
         $histori = DB::table('presensi')
             ->select('presensi.*', 'keterangan', 'jam_kerja.*', 'doc_sid', 'nama_cuti')
             ->leftJoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja')
             ->leftJoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin')
             ->leftJoin('master_cuti', 'pengajuan_izin.kode_cuti', '=', 'master_cuti.kode_cuti')
-            ->where('presensi.nik', $nik)
+            ->where('presensi.nuptk', $nuptk)
             ->whereBetween('tgl_presensi', [$tanggal_mulai, $tanggal_selesai])
             ->orderBy('tgl_presensi')
             ->get();
@@ -257,19 +255,19 @@ class PresensiController extends Controller
 
     public function izin(Request $request)
 {
-    $nik = Auth::guard('karyawan')->user()->nik;
+    $nuptk = Auth::guard('guru')->user()->nuptk;
 
     if (!empty($request->tanggal_mulai) && !empty($request->tanggal_selesai)) {
         $dataizin = DB::table('pengajuan_izin')
             ->leftjoin('master_cuti', 'pengajuan_izin.kode_cuti', '=', 'master_cuti.kode_cuti')
             ->orderBy('tgl_izin_dari', 'desc')
-            ->where('nik', $nik)
+            ->where('nuptk', $nuptk)
             ->whereBetween('tgl_izin_dari', [$request->tanggal_mulai, $request->tanggal_selesai])
             ->get();
     } else {
         $dataizin = DB::table('pengajuan_izin')
             ->leftjoin('master_cuti', 'pengajuan_izin.kode_cuti', '=', 'master_cuti.kode_cuti')
-            ->where('nik', $nik)
+            ->where('nuptk', $nuptk)
             ->orderBy('tgl_izin_dari', 'desc')
             ->limit(5)
             ->get();
@@ -287,13 +285,13 @@ class PresensiController extends Controller
 
     public function storeizin(Request $request)
     {
-        $nik = Auth::guard('karyawan')->user()->nik;
+        $nuptk = Auth::guard('guru')->user()->nuptk;
         $tgl_izin = $request->tgl_izin;
         $status = $request->status;
         $keterangan = $request->keterangan;
 
         $data =[
-            'nik'=> $nik,
+            'nuptk'=> $nuptk,
             'tgl_izin'=> $tgl_izin,
             'status'=>$status,
             'keterangan'=> $keterangan
@@ -315,11 +313,11 @@ class PresensiController extends Controller
     {
         $tanggal = $request->tanggal;
         $presensi = DB::table('presensi')
-        ->select('presensi.*','nama_lengkap','karyawan.jabatan','jam_masuk','nama_jam_kerja','jam_masuk','jam_pulang','keterangan')
+        ->select('presensi.*','nama_lengkap','guru.jabatan','jam_masuk','nama_jam_kerja','jam_masuk','jam_pulang','keterangan')
         ->leftJoin('jam_kerja','presensi.kode_jam_kerja','=','jam_kerja.kode_jam_kerja')
         ->leftJoin('pengajuan_izin','presensi.kode_izin','=','pengajuan_izin.kode_izin')
-        ->join('karyawan','presensi.nik','=','karyawan.nik')
-        ->join('departemen','karyawan.kode_dept','=','departemen.kode_dept')
+        ->join('guru','presensi.nuptk','=','guru.nuptk')
+        
         ->where('tgl_presensi',$tanggal)
         ->get();
 
@@ -330,7 +328,7 @@ class PresensiController extends Controller
     {
         $id = $request->id;
         $presensi = DB::table('presensi')->where('id',$id)
-        ->join('karyawan','presensi.nik','=','karyawan.nik')
+        ->join('guru','presensi.nuptk','=','guru.nuptk')
         ->first();
         return view ('presensi.showmap',compact('presensi'));
     }
@@ -339,27 +337,27 @@ class PresensiController extends Controller
     {
         $namabulan =
         ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-        $karyawan = DB::table('karyawan')->orderBy('nama_lengkap')->get();
-        return view ('presensi.laporan',compact('namabulan','karyawan'));
+        $guru = DB::table('guru')->orderBy('nama_lengkap')->get();
+        return view ('presensi.laporan',compact('namabulan','guru'));
     }
 
     public function cetaklaporan(Request $request)
 {
-    $nik = $request->nik;
+    $nuptk = $request->nuptk;
     $tanggal_mulai = $request->tanggal_mulai;
     $tanggal_selesai = $request->tanggal_selesai;
     $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    $karyawan = DB::table('karyawan')
-        ->where('nik', $nik)
-        ->join('departemen', 'karyawan.kode_dept', '=', 'departemen.kode_dept')
+    $guru = DB::table('guru')
+        ->where('nuptk', $nuptk)
+       
         ->first();
 
     $presensi = DB::table('presensi')
         ->select('presensi.*', 'keterangan', 'jam_kerja.*')
         ->leftJoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja')
         ->leftJoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin')
-        ->where('presensi.nik', $nik)
+        ->where('presensi.nuptk', $nuptk)
         ->whereBetween('tgl_presensi', [$tanggal_mulai, $tanggal_selesai])
         ->orderBy('tgl_presensi')
         ->get();
@@ -368,10 +366,10 @@ class PresensiController extends Controller
         $time = date("d-M-Y H:i:s");
         header("Content-type: application/vnd-ms-excel");
         header("Content-Disposition: attachment; filename=Laporan Presensi $time.xls");
-        return view('presensi.cetaklaporanexcel', compact('tanggal_mulai', 'tanggal_selesai', 'namabulan', 'karyawan', 'presensi'));
+        return view('presensi.cetaklaporanexcel', compact('tanggal_mulai', 'tanggal_selesai', 'namabulan', 'guru', 'presensi'));
     }
 
-    return view('presensi.cetaklaporan', compact('tanggal_mulai', 'tanggal_selesai', 'namabulan', 'karyawan', 'presensi'));
+    return view('presensi.cetaklaporan', compact('tanggal_mulai', 'tanggal_selesai', 'namabulan', 'guru', 'presensi'));
 }
 
 
@@ -396,7 +394,7 @@ class PresensiController extends Controller
     $dari = $tahun . "-" . $bulan . "-01";
     $sampai = date("Y-m-t", strtotime($dari));
     $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    $datalibur = getkaryawanlibur($dari, $sampai);
+    $datalibur = getgurulibur($dari, $sampai);
     $harilibur = DB::table('harilibur')->whereBetween('tanggal_libur', [$dari, $sampai])->get();
 
     $select_date = "";
@@ -433,24 +431,24 @@ class PresensiController extends Controller
         array_push($rangetanggal, NULL, NULL, NULL);
     }
 
-    $query = Karyawan::query();
+    $query = Guru::query();
     $query->selectRaw(
-        "$field_date karyawan.nik, nama_lengkap, jabatan"
+        "$field_date guru.nuptk, nama_lengkap, jabatan"
     );
 
     $query->leftJoin(DB::raw("
         (
             SELECT
             $select_date
-            presensi.nik
+            presensi.nuptk
             FROM presensi
             LEFT JOIN jam_kerja ON presensi.kode_jam_kerja = jam_kerja.kode_jam_kerja
             LEFT JOIN pengajuan_izin ON presensi.kode_izin = pengajuan_izin.kode_izin
             WHERE tgl_presensi BETWEEN '$rangetanggal[0]' AND '$sampai'
-            GROUP BY nik
+            GROUP BY nuptk
         ) presensi
     "), function($join) {
-        $join->on('karyawan.nik', '=', 'presensi.nik');
+        $join->on('guru.nuptk', '=', 'presensi.nuptk');
     });
 
     $query->orderBy('nama_lengkap');
@@ -477,15 +475,15 @@ class PresensiController extends Controller
     public function izinsakit(Request $request)
     {
         $query = Pengajuanizin::query();
-        $query->select('kode_izin', 'tgl_izin_dari','tgl_izin_sampai', 'pengajuan_izin.nik', 'nama_lengkap', 'jabatan', 'status','doc_sid', 'status_approved', 'keterangan');
-        $query->join('karyawan', 'pengajuan_izin.nik', '=', 'karyawan.nik');
+        $query->select('kode_izin', 'tgl_izin_dari','tgl_izin_sampai', 'pengajuan_izin.nuptk', 'nama_lengkap', 'jabatan', 'status','doc_sid', 'status_approved', 'keterangan');
+        $query->join('guru', 'pengajuan_izin.nuptk', '=', 'guru.nuptk');
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_izin_dari', [$request->dari, $request->sampai]);
         }
 
-        if (!empty($request->nik)) {
-            $query->where('pengajuan_izin.nik', $request->nik);
+        if (!empty($request->nuptk)) {
+            $query->where('pengajuan_izin.nuptk', $request->nuptk);
         }
 
         if (!empty($request->nama_lengkap)) {
@@ -507,7 +505,7 @@ class PresensiController extends Controller
         $status_approved = $request->status_approved;
         $kode_izin = $request->kode_izin_form;
         $dataizin = DB::table('pengajuan_izin')->where('kode_izin',$kode_izin)->first();
-        $nik = $dataizin->nik;
+        $nuptk = $dataizin->nuptk;
         $tgl_dari = $dataizin->tgl_izin_dari;
         $tgl_sampai = $dataizin->tgl_izin_sampai;
         $status = $dataizin->status;
@@ -516,7 +514,7 @@ class PresensiController extends Controller
             if($status_approved == 1){
                 while(strtotime($tgl_dari)<=strtotime ($tgl_sampai)){
                     DB::table('presensi')->insert([
-                        'nik' =>$nik,
+                        'nuptk' =>$nuptk,
                         'tgl_presensi'=>$tgl_dari,
                         'status'=>$status,
                         'kode_izin' =>$kode_izin
@@ -556,9 +554,9 @@ class PresensiController extends Controller
     public function cekpengajuanizin(Request $request)
     {
         $tgl_izin = $request->tgl_izin;
-        $nik = Auth::guard('karyawan')->user()->nik;
+        $nuptk = Auth::guard('guru')->user()->nuptk;
 
-        $cek = DB::table('pengajuan_izin')->where('nik',$nik)->where('tgl_izin',$tgl_izin)->count();
+        $cek = DB::table('pengajuan_izin')->where('nuptk',$nuptk)->where('tgl_izin',$tgl_izin)->count();
         return $cek;
     }
 
@@ -586,16 +584,16 @@ class PresensiController extends Controller
 
 //    public function koreksipresensi(Request $request)
 //    {
-//    $nik = $request->nik;
-//    $karyawan = DB::table('karyawan')->where('nik', $nik)->first();
+//    $nuptk = $request->nuptk;
+//    $guru = DB::table('guru')->where('nuptk', $nuptk)->first();
 //    $tanggal = $request->tanggal;
 //    $jamkerja = DB::table('jam_kerja')->orderBy('kode_jam_kerja')->get();
-//    return view('presensi.koreksipresensi', compact('karyawan', 'tanggal','jamkerja'));
+//    return view('presensi.koreksipresensi', compact('guru', 'tanggal','jamkerja'));
 //    }
 
 //    public function storekoreksipresensi (Request $request)
 //    {
-//        $nik = $request->nik;
+//        $nuptk = $request->nuptk;
 //        $tanggal = $request->tanggal;
 //        $jam_in = $request->jam_in;
 //        $jam_out = $request->jam_out;
@@ -604,7 +602,7 @@ class PresensiController extends Controller
 
 //        try {
 //            DB::table('presensi')->insert([
-//                'nik' => $nik,
+//                'nuptk' => $nuptk,
 //                'tgl_presensi' => $tanggal,
 //                'jam_in' => $jam_in,
 //                'jam_out' => $jam_out,

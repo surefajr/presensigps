@@ -24,11 +24,11 @@
             font-weight: bold;
         }
 
-        .tabeldatakaryawan {
+        .tabeldataguru {
             margin-top: 40px;
         }
 
-        .tabeldatakaryawan tr td {
+        .tabeldataguru tr td {
             padding: 5px;
         }
 
@@ -103,29 +103,30 @@
                 </td>
             </tr>
         </table>
-        <table class="tabelpresensi">
-            <tr>
-                <th rowspan="2">NUPTK</th>
-                <th rowspan="2">Nama Guru</th>
-                <th colspan="{{ $jmlhari }}">Bulan {{ $namabulan[$bulan] }} {{ $tahun }}</th>
-                <th rowspan="2">H</th>
-                <th rowspan="2">I</th>
-                <th rowspan="2">S</th>
-                <th rowspan="2">C</th>
-                <th rowspan="2">A</th>
-            </tr>
-            <tr>
-                @foreach ($rangetanggal as $d)
-                    @if ($d != null)
-                        <th>{{ date('d', strtotime($d)) }}</th>
-                    @endif
-                @endforeach
-            </tr>
-            @foreach ($rekap as $r)
+        <div class="table-responsive">
+            <table class="tabelpresensi">
                 <tr>
-                    <td>{{ $r->nik }}</td>
-                    <td>{{ $r->nama_lengkap }}</td>
-                    <?php
+                    <th rowspan="2">NUPTK</th>
+                    <th rowspan="2">Nama Guru</th>
+                    <th colspan="{{ $jmlhari }}">Bulan {{ $namabulan[$bulan] }} {{ $tahun }}</th>
+                    <th rowspan="2">H</th>
+                    <th rowspan="2">I</th>
+                    <th rowspan="2">S</th>
+                    <th rowspan="2">C</th>
+                    <th rowspan="2">A</th>
+                </tr>
+                <tr>
+                    @foreach ($rangetanggal as $d)
+                        @if ($d != null)
+                            <th>{{ date('d', strtotime($d)) }}</th>
+                        @endif
+                    @endforeach
+                </tr>
+                @foreach ($rekap as $r)
+                    <tr>
+                        <td>{{ $r->nuptk }}</td>
+                        <td>{{ $r->nama_lengkap }}</td>
+                        <?php
                     $jml_hadir = 0;
                     $jml_izin = 0;
                     $jml_sakit = 0;
@@ -135,10 +136,10 @@
                         $tgl ="tgl_".$i;
                         $tgl_presensi = $rangetanggal[$i-1];
                         $search_items = [
-                        'nik' => $r->nik,
+                        'nuptk' => $r->nuptk,
                         'tanggal_libur' => $tgl_presensi
                     ];
-                        $ceklibur = cekkaryawanlibur($datalibur,$search_items);
+                        $ceklibur = cekgurulibur($datalibur,$search_items);
                         $datapresensi = explode("|",$r->$tgl);
                         if ($r->$tgl != NULL) {
                             $status = $datapresensi[2];
@@ -174,22 +175,23 @@
                             $color = "red";
                         }
                     ?>
-                    <td style="background-color: {{ $color }};">
-                        {{ $status }}
+                        <td style="background-color: {{ $color }};">
+                            {{ $status }}
 
-                    </td>
-                    <?php
+                        </td>
+                        <?php
                     }
                      ?>
-                    <td>{{ !empty($jml_hadir) ? $jml_hadir : '' }}</td>
-                    <td>{{ !empty($jml_izin) ? $jml_izin : '' }}</td>
-                    <td>{{ !empty($jml_sakit) ? $jml_sakit : '' }}</td>
-                    <td>{{ !empty($jml_cuti) ? $jml_cuti : '' }}</td>
-                    <td>{{ !empty($jml_alpa) ? $jml_alpa : '' }}</td>
-                </tr>
-            @endforeach
+                        <td>{{ !empty($jml_hadir) ? $jml_hadir : '' }}</td>
+                        <td>{{ !empty($jml_izin) ? $jml_izin : '' }}</td>
+                        <td>{{ !empty($jml_sakit) ? $jml_sakit : '' }}</td>
+                        <td>{{ !empty($jml_cuti) ? $jml_cuti : '' }}</td>
+                        <td>{{ !empty($jml_alpa) ? $jml_alpa : '' }}</td>
+                    </tr>
+                @endforeach
 
-        </table>
+            </table>
+        </div>
         <h4>Keterangan Libur : </h4>
         <ol>
             @foreach ($harilibur as $d)

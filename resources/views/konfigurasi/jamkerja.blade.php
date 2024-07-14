@@ -49,55 +49,56 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Kode Jam Kerja</th>
-                                                <th>Nama Jam Kerja</th>
-                                                <th>Awal Jam Masuk</th>
-                                                <th>Jam Masuk</th>
-                                                <th>Akhir Jam Masuk</th>
-                                                <th>Awal Istirahat</th>
-                                                <th>Akhir Istirahat</th>
-                                                <th>Jam Pulang</th>
-                                                <th>Total Jam</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($jam_kerja as $d)
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $d->kode_jam_kerja }}</td>
-                                                    <td>{{ $d->nama_jam_kerja }}</td>
-                                                    <td>{{ $d->awal_jam_masuk }}</td>
-                                                    <td>{{ $d->jam_masuk }}</td>
-                                                    <td>{{ $d->akhir_jam_masuk }}</td>
-                                                    <td>{{ $d->awal_istirahat }}</td>
-                                                    <td>{{ $d->akhir_istirahat }}</td>
-                                                    <td>{{ $d->jam_pulang }}</td>
-                                                    <td class="text-center">{{ $d->total_jam }}</td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <a href="#" class="edit btn btn-info btn-sm"
-                                                                kode_jam_kerja="{{ $d->kode_jam_kerja }}">
-                                                                Edit
-                                                            </a>
-                                                            <form action="/konfigurasi/{{ $d->kode_jam_kerja }}/delete"
-                                                                method="POST" style="margin-left:5px;">
-                                                                @csrf
-                                                                <a class="btn btn-danger btn-sm delete-confirm">
-                                                                    Hapus
-                                                                </a>
-                                                            </form>
-                                                        </div>
-                                                    </td>
+                                                    <th>No</th>
+                                                    <th>Kode Jam Kerja</th>
+                                                    <th>Nama Jam Kerja</th>
+                                                    <th>Awal Jam Masuk</th>
+                                                    <th>Jam Masuk</th>
+                                                    <th>Akhir Jam Masuk</th>
+                                                    <th>Awal Istirahat</th>
+                                                    <th>Akhir Istirahat</th>
+                                                    <th>Jam Pulang</th>
+                                                    <th>Total Jam</th>
+                                                    <th>Aksi</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($jam_kerja as $d)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $d->kode_jam_kerja }}</td>
+                                                        <td>{{ $d->nama_jam_kerja }}</td>
+                                                        <td>{{ $d->awal_jam_masuk }}</td>
+                                                        <td>{{ $d->jam_masuk }}</td>
+                                                        <td>{{ $d->akhir_jam_masuk }}</td>
+                                                        <td>{{ $d->awal_istirahat }}</td>
+                                                        <td>{{ $d->akhir_istirahat }}</td>
+                                                        <td>{{ $d->jam_pulang }}</td>
+                                                        <td class="text-center">{{ $d->total_jam }}</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="#" class="edit btn btn-info btn-sm"
+                                                                    kode_jam_kerja="{{ $d->kode_jam_kerja }}">
+                                                                    Edit
+                                                                </a>
+                                                                <form action="/konfigurasi/{{ $d->kode_jam_kerja }}/delete"
+                                                                    method="POST" style="margin-left:5px;">
+                                                                    @csrf
+                                                                    <a class="btn btn-danger btn-sm delete-confirm">
+                                                                        Hapus
+                                                                    </a>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,6 +131,7 @@
                                                 d="M13 8h3a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h3" />
                                         </svg>
                                     </span>
+                                    
                                     <input type="text" maxlength="6" id="kode_jam_kerja" class="form-control"
                                         placeholder="Kode Jam Kerja" name="kode_jam_kerja" autocomplete="off">
                                 </div>
@@ -383,7 +385,7 @@
                 var jam_pulang = $("#jam_pulang").val();
                 var total_jam = $("#total_jam").val();
                 if (kode_jam_kerja == "") {
-                    // alert('Nik Harus Di Isi');
+
                     Swal.fire({
                         title: 'Warning!',
                         text: 'Kode Jam Kerja Harus di isi !!',

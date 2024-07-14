@@ -1,11 +1,11 @@
-@foreach ($karyawanlibur as $d)
+@foreach ($gurulibur as $d)
     <tr>
         <td>{{ $loop->iteration }}</td>
-        <td>{{ $d->nik }}</td>
+        <td>{{ $d->nuptk }}</td>
         <td>{{ $d->nama_lengkap }}</td>
         <td>{{ $d->jabatan }}</td>
         <td>
-            <a href="#" class="btn btn-danger btn-sm cancelibur" nik="{{ $d->nik }}">
+            <a href="#" class="btn btn-danger btn-sm cancelibur" nuptk="{{ $d->nuptk }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-x">
@@ -21,21 +21,21 @@
 <script>
     $(function() {
 
-        function loadkaryawanlibur() {
+        function loadgurulibur() {
             var kode_libur = "{{ $kode_libur }}";
-            $("#loadkaryawanlibur").load('/konfigurasi/harilibur/' + kode_libur + '/getkaryawanlibur');
+            $("#loadgurulibur").load('/konfigurasi/harilibur/' + kode_libur + '/getgurulibur');
         }
         $(".cancelibur").click(function(e) {
             e.preventDefault();
             var kode_libur = "{{ $kode_libur }}";
-            var nik = $(this).attr('nik');
+            var nuptk = $(this).attr('nuptk');
             $.ajax({
                 type: 'POST',
-                url: '/konfigurasi/harilibur/batalkanliburkaryawan',
+                url: '/konfigurasi/harilibur/batalkanliburguru',
                 data: {
                     _token: "{{ csrf_token() }}",
                     kode_libur: kode_libur,
-                    nik: nik
+                    nuptk: nuptk
                 },
                 cache: false,
                 success: function(respond) {
@@ -47,7 +47,7 @@
                             confirmButtonText: 'OK'
                         });
 
-                        loadkaryawanlibur();
+                        loadgurulibur();
                     } else if (respond === '1') {
                         Swal.fire({
                             title: 'Oops!',

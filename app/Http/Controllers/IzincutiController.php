@@ -17,7 +17,7 @@ class IzincutiController extends Controller
 
     public function store(Request $request)
     {
-        $nik = Auth::guard('karyawan')->user()->nik;
+        $nuptk = Auth::guard('guru')->user()->nuptk;
         $tgl_izin_dari = $request->tgl_izin_dari;
         $tgl_izin_sampai = $request->tgl_izin_sampai;
         $kode_cuti = $request->kode_cuti;
@@ -46,7 +46,7 @@ class IzincutiController extends Controller
     $cutidigunakan = DB::table('presensi')
     ->whereRaw('YEAR(tgl_presensi)="'.$tahun.'"')
     ->where('status','c')
-    ->where('nik',$nik)
+    ->where('nuptk',$nuptk)
     ->count();
 
     //sisa cuti
@@ -54,7 +54,7 @@ class IzincutiController extends Controller
 
         $data =[
             'kode_izin' => $kode_izin,
-            'nik'=> $nik,
+            'nuptk'=> $nuptk,
             'tgl_izin_dari'=> $tgl_izin_dari,
             'tgl_izin_sampai'=> $tgl_izin_sampai,
             'kode_cuti' => $kode_cuti,
@@ -65,12 +65,12 @@ class IzincutiController extends Controller
         //cek sudah absen / belum
         $cekpresensi = DB::table('presensi')
         ->whereBetween('tgl_presensi',[$tgl_izin_dari,$tgl_izin_sampai])
-        ->where('nik',$nik);
+        ->where('nuptk',$nuptk);
 
 
         //cek sudah diajukan/belum
         $cekpengajuan = DB::table('pengajuan_izin')
-        ->where('nik',$nik)
+        ->where('nuptk',$nuptk)
         ->whereRaw('"'.$tgl_izin_dari.'" BETWEEN tgl_izin_dari AND tgl_izin_sampai');
 
 
@@ -126,7 +126,7 @@ class IzincutiController extends Controller
     }
     public function getmaxcuti(Request $request)
     {
-        $nik = Auth::guard('karyawan')->user()->nik;
+        $nuptk = Auth::guard('guru')->user()->nuptk;
         $kode_cuti = $request->kode_cuti;
         $tgl_izin_dari = $request->tgl_izin_dari;
         $tahun_cuti = date('Y',strtotime($tgl_izin_dari));
@@ -138,7 +138,7 @@ class IzincutiController extends Controller
             ->where('presensi.status','c')
             ->where('kode_cuti','C01')
             ->whereRaw('YEAR(tgl_presensi)="' .$tahun_cuti.'"')
-            ->where('presensi.nik',$nik)
+            ->where('presensi.nuptk',$nuptk)
             ->count();
         $max_cuti = $cuti->jml_hari - $cuti_digunakan;
         }else{

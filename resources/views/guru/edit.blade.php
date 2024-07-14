@@ -1,4 +1,4 @@
-<form action="/karyawan/{{ $karyawan->nik }}/update" method="POST" id="frmKaryawan" enctype="multipart/form-data">
+<form action="/guru/{{ $guru->nuptk }}/update" method="POST" id="frmGuru" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -15,8 +15,28 @@
                         <path d="M7 16l10 0" />
                     </svg>
                 </span>
-                <input type="text" value="{{ $karyawan->nik }}" id="nik" class="form-control" placeholder="NIK"
-                    name="nik_baru">
+                <input type="text" value="{{ $guru->username }}" id="username" class="form-control"
+                    placeholder="Username" name="username_baru">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="input-icon mb-3">
+                <span class="input-icon-addon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-id">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                        <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                        <path d="M15 8l2 0" />
+                        <path d="M15 12l2 0" />
+                        <path d="M7 16l10 0" />
+                    </svg>
+                </span>
+                <input type="text" value="{{ $guru->nuptk }}" id="nuptk" class="form-control"
+                    placeholder="NUPTK" name="nuptk_baru">
             </div>
         </div>
     </div>
@@ -32,7 +52,7 @@
                         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                     </svg>
                 </span>
-                <input type="text" id="nama_lengkap" value="{{ $karyawan->nama_lengkap }}" class="form-control"
+                <input type="text" id="nama_lengkap" value="{{ $guru->nama_lengkap }}" class="form-control"
                     name="nama_lengkap" placeholder="Nama Lengkap">
             </div>
         </div>
@@ -51,8 +71,8 @@
                         <path d="M10.5 7h3l5 5.5" />
                     </svg>
                 </span>
-                <input type="text" id="jabatan" value="{{ $karyawan->jabatan }}" class="form-control"
-                    name="jabatan" placeholder="Jabatan">
+                <input type="text" id="jabatan" value="{{ $guru->jabatan }}" class="form-control" name="jabatan"
+                    placeholder="Jabatan">
             </div>
         </div>
     </div>
@@ -71,28 +91,18 @@
                         <path d="M15 3a6 6 0 0 1 6 6" />
                     </svg>
                 </span>
-                <input type="text" id="no_hp" value="{{ $karyawan->no_hp }}" class="form-control" name="no_hp"
-                    placeholder="No HP">
+                <input type="text" id="no_hp" value="{{ $guru->no_hp }}" class="form-control"
+                    name="no_hp" placeholder="No HP">
             </div>
         </div>
     </div>
     <div class="row mt-2 ">
         <div class="col-12">
             <input type="file" name="foto" class="form-control">
-            <input type="hidden" name="old_foto" value="{{ $karyawan->foto }}">
+            <input type="hidden" name="old_foto" value="{{ $guru->foto }}">
         </div>
     </div>
-    <div class="row mt-2 ">
-        <div class="col-12">
-            <select name="kode_dept" id="kode_dept" class="form-select">
-                <option value="">Kode Mata Pelajaran</option>
-                @foreach ($departemen as $d)
-                    <option {{ $karyawan->kode_dept == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">
-                        {{ $d->nama_dept }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
+
     <div class="row mt-2 ">
         <div class="col-12">
             <div class="form-group">

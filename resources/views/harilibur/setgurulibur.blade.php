@@ -35,7 +35,7 @@
                             {{-- untuk naro @role --}}
                             <div class="row">
                                 <div class="col-12">
-                                    <a href="#" class="btn btn-primary" id="btnSetkaryawanlibur">
+                                    <a href="#" class="btn btn-primary" id="btnSetgurulibur">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -80,7 +80,7 @@
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="loadkaryawanlibur"></tbody>
+                                        <tbody id="loadgurulibur"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -91,14 +91,14 @@
         </div>
     </div>
     {{-- modal create --}}
-    <div class="modal modal-blur fade" id="modal-setkaryawanlibur" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-setgurulibur" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Guru Libur</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="loadsetkaryawanlibur">
+                <div class="modal-body" id="loadsetgurulibur">
 
                 </div>
             </div>
@@ -109,17 +109,17 @@
     <script>
         $(function() {
 
-            function loadkaryawanlibur() {
+            function loadgurulibur() {
                 var kode_libur = "{{ $harilibur->kode_libur }}";
-                $("#loadkaryawanlibur").load('/konfigurasi/harilibur/' + kode_libur +
-                    '/getkaryawanlibur');
+                $("#loadgurulibur").load('/konfigurasi/harilibur/' + kode_libur +
+                    '/getgurulibur');
             }
 
-            $("#btnSetkaryawanlibur").click(function() {
+            $("#btnSetgurulibur").click(function() {
                 var kode_libur = "{{ $harilibur->kode_libur }}";
-                $("#modal-setkaryawanlibur").modal("show");
-                $("#loadsetkaryawanlibur").load('/konfigurasi/harilibur/' + kode_libur +
-                    '/setlistkaryawanlibur');
+                $("#modal-setgurulibur").modal("show");
+                $("#loadsetgurulibur").load('/konfigurasi/harilibur/' + kode_libur +
+                    '/setlistgurulibur');
             });
         });
     </script>

@@ -22,7 +22,7 @@ function selisih($jam_masuk, $jam_keluar)
     @if ($d->status == 'h')
         <tr>
             <td>{{ $loop->iteration }}</td>
-            <td>{{ $d->nik }}</td>
+            <td>{{ $d->nuptk }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <td>{{ $d->jabatan }}</td>
             <td>{{ $d->nama_jam_kerja }}</td>
@@ -71,7 +71,7 @@ function selisih($jam_masuk, $jam_keluar)
     @else
         <tr>
             <td>{{ $loop->iteration }}</td>
-            <td>{{ $d->nik }}</td>
+            <td>{{ $d->nuptk }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <td>{{ $d->jabatan }}</td>
             <td>
@@ -135,7 +135,7 @@ function selisih($jam_masuk, $jam_keluar)
 
         //  $(".koreksipresensi").click(function(e) {
         //      e.preventDefault();
-        //      var nik = $(this).attr("nik");
+        //      var nuptk = $(this).attr("nuptk");
         //      var tanggal = "{{ $tanggal }}";
 
         //      $.ajax({
@@ -143,7 +143,7 @@ function selisih($jam_masuk, $jam_keluar)
         //          url: '/koreksipresensi',
         //          data: {
         //              _token: "{{ csrf_token() }}",
-        //              nik: nik,
+        //              nuptk: nuptk,
         //              tanggal: tanggal
         //          },
         //          cache: false,

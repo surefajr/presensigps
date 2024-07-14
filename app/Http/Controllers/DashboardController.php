@@ -12,15 +12,15 @@ class DashboardController extends Controller
         $hariini = date("Y-m-d");
         $bulanini = date("m")* 1;
         $tahunini = date("Y");
-        $nik = Auth::guard('karyawan')->user()->nik;
-        $presensihariini = DB::table('presensi')->where('nik',$nik)->where('tgl_presensi',$hariini)->first();
+        $nuptk = Auth::guard('guru')->user()->nuptk;
+        $presensihariini = DB::table('presensi')->where('nuptk',$nuptk)->where('tgl_presensi',$hariini)->first();
 
         $histori = DB::table('presensi')
         ->select('presensi.*','keterangan','jam_kerja.*','doc_sid','nama_cuti')
         ->leftJoin('jam_kerja','presensi.kode_jam_kerja','=','jam_kerja.kode_jam_kerja')
         ->leftjoin('pengajuan_izin','presensi.kode_izin','=','pengajuan_izin.kode_izin')
         ->leftJoin('master_cuti','pengajuan_izin.kode_cuti','=','master_cuti.kode_cuti')
-        ->where('presensi.nik',$nik)
+        ->where('presensi.nuptk',$nuptk)
         ->whereRaw('MONTH(tgl_presensi)="' . $bulanini . '"')
         ->whereRaw('YEAR(tgl_presensi)="' . $tahunini . '"')
         ->orderBy('tgl_presensi','desc')
@@ -37,13 +37,13 @@ class DashboardController extends Controller
         SUM(IF(jam_in > jam_masuk,1,0))as jmlterlambat
         ')
         ->leftJoin('jam_kerja','presensi.kode_jam_kerja','=','jam_kerja.kode_jam_kerja')
-        ->where('nik', $nik)
+        ->where('nuptk', $nuptk)
         ->whereRaw('MONTH(tgl_presensi)="' . $bulanini . '"')
         ->whereRaw('YEAR(tgl_presensi)="' . $tahunini . '"')
         ->first();
 
         $leaderboard = DB::table('presensi')
-        ->join('karyawan','presensi.nik','=','karyawan.nik')
+        ->join('guru','presensi.nuptk','=','guru.nuptk')
         ->where('tgl_presensi',$hariini)
         ->orderBy('jam_in')
         ->get();

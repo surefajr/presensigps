@@ -11,11 +11,11 @@
             font-weight: bold;
         }
 
-        .tabeldatakaryawan {
+        .tabeldataguru {
             margin-top: 40px;
         }
 
-        .tabeldatakaryawan tr td {
+        .tabeldataguru tr td {
             padding: 5px;
         }
 
@@ -83,7 +83,7 @@
             </tr>
             @foreach ($rekap as $r)
                 <tr>
-                    <td>{{ $r->nik }}</td>
+                    <td>{{ $r->nuptk }}</td>
                     <td>{{ $r->nama_lengkap }}</td>
                     <?php
                     $jml_hadir = 0;
@@ -95,10 +95,10 @@
                         $tgl = "tgl_" . $i;
                         $tgl_presensi = $rangetanggal[$i - 1];
                         $search_items = [
-                            'nik' => $r->nik,
+                            'nuptk' => $r->nuptk,
                             'tanggal_libur' => $tgl_presensi
                         ];
-                        $ceklibur = cekkaryawanlibur($datalibur, $search_items);
+                        $ceklibur = cekgurulibur($datalibur, $search_items);
                         $datapresensi = explode("|", $r->$tgl);
                         if ($r->$tgl != null) {
                             $status = $datapresensi[2];

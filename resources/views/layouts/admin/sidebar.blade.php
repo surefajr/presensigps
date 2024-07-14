@@ -207,9 +207,9 @@
                        </a>
                    </li>
                    <li class="nav-item dropdown">
-                       <a class="nav-link dropdown-toggle {{ request()->is(['karyawan', 'departemen']) ? 'show' : '' }}"
+                       <a class="nav-link dropdown-toggle {{ request()->is(['guru']) ? 'show' : '' }}"
                            href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
-                           aria-expanded="{{ request()->is(['karyawan', 'departemen']) ? 'true' : '' }}">
+                           aria-expanded="{{ request()->is(['guru']) ? 'true' : '' }}">
                            <span
                                class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -224,26 +224,25 @@
                                </svg>
                            </span>
                            <span class="nav-link-title">
-                               Data Master
+                               Kelola Data
                            </span>
                        </a>
                        <div
-                           class="dropdown-menu {{ request()->is(['karyawan', 'departemen', 'cuti']) ? 'show' : '' }}">
+                           class="dropdown-menu {{ request()->is(['guru', 'cuti', 'konfigurasi/jamkerja']) ? 'show' : '' }}">
                            <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
-                                   <a class="dropdown-item {{ request()->is(['karyawan']) ? 'active' : '' }}"
-                                       href="/karyawan">
+                                   <a class="dropdown-item {{ request()->is(['guru']) ? 'active' : '' }}"
+                                       href="/guru">
                                        Guru
                                    </a>
-                                   {{-- <a class="dropdown-item {{ request()->is(['departemen']) ? 'active' : '' }}"
-                                       href="/departemen">
-                                       Kode Mata Pelajaran
-                                   </a> --}}
                                    <a class="dropdown-item {{ request()->is(['cuti']) ? 'active' : '' }}"
                                        href="/cuti">
                                        Cuti
                                    </a>
-
+                                   <a class="dropdown-item {{ request()->is(['konfigurasi/jamkerja']) ? 'active' : '' }}"
+                                       href="/konfigurasi/jamkerja">
+                                       Jam Kerja
+                                   </a>
                                </div>
                            </div>
                        </div>
@@ -292,7 +291,7 @@
                                </svg>
                            </span>
                            <span class="nav-link-title">
-                               Data Pengajuan Izin
+                               Approved Data Izin
                            </span>
                        </a>
                    </li>
@@ -325,10 +324,10 @@
                            class="dropdown-menu {{ request()->is(['presensi/laporan', 'presensi/rekap']) ? 'show' : '' }}">
                            <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
-                                   <a class="dropdown-item {{ request()->is(['presensi/laporan']) ? 'active' : '' }}"
+                                   {{-- <a class="dropdown-item {{ request()->is(['presensi/laporan']) ? 'active' : '' }}"
                                        href="/presensi/laporan">
                                        Presensi Guru
-                                   </a>
+                                   </a> --}}
                                    <a class="dropdown-item {{ request()->is(['presensi/rekap']) ? 'active' : '' }}"
                                        href="/presensi/rekap">
                                        Rekapitulasi Presensi
@@ -365,14 +364,14 @@
                                    </a>
                                </div>
                            </div>
-                           <div class="dropdown-menu-columns">
+                           {{-- <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
                                    <a class="dropdown-item {{ request()->is(['konfigurasi/jamkerja']) ? 'active' : '' }}"
                                        href="/konfigurasi/jamkerja">
                                        Jam Mengajar
                                    </a>
                                </div>
-                           </div>
+                           </div> --}}
                            <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
                                    <a class="dropdown-item {{ request()->is(['konfigurasi/users']) ? 'active' : '' }}"
@@ -381,14 +380,14 @@
                                    </a>
                                </div>
                            </div>
-                           <div class="dropdown-menu-columns">
+                           {{-- <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
                                    <a class="dropdown-item {{ request()->is(['konfigurasi/harilibur']) ? 'active' : '' }}"
                                        href="/konfigurasi/harilibur">
                                        Hari Libur
                                    </a>
                                </div>
-                           </div>
+                           </div> --}}
                        </div>
                    </li>
                </ul>

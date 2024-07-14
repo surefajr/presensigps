@@ -79,24 +79,24 @@ function hitungjamkerja($jam_masuk, $jam_pulang)
 }
 
 
-function getkaryawanlibur($dari,$sampai)
+function getgurulibur($dari,$sampai)
 {
     $datalibur = DB::table('harilibur_detail')
     ->join('harilibur','harilibur_detail.kode_libur','=','harilibur.kode_libur')
     ->whereBetween('tanggal_libur',[$dari,$sampai])
     ->get();
 
-    $karyawanlibur = [];
+    $gurulibur = [];
     foreach ($datalibur as $d){
-        $karyawanlibur[] = [
-            'nik' => $d->nik,
+        $gurulibur[] = [
+            'nuptk' => $d->nuptk,
             'tanggal_libur' => $d->tanggal_libur,
             'keterangan' => $d->keterangan,
         ];
     }
-    return $karyawanlibur;
+    return $gurulibur;
 }
-function cekkaryawanlibur ($array,$search_list)
+function cekgurulibur ($array,$search_list)
 {
     $result  =array();
 

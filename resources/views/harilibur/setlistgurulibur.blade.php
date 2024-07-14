@@ -10,19 +10,19 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody id="loadsetlistkaryawanlibur"></tbody>
+            <tbody id="loadsetlistgurulibur"></tbody>
         </table>
     </div>
 </div>
 
 <script>
     $(function() {
-        function loadsetlistkaryawanlibur() {
+        function loadsetlistgurulibur() {
             var kode_libur = "{{ $kode_libur }}";
-            $("#loadsetlistkaryawanlibur").load('/konfigurasi/harilibur/' + kode_libur +
-                '/getsetlistkaryawanlibur');
+            $("#loadsetlistgurulibur").load('/konfigurasi/harilibur/' + kode_libur +
+                '/getsetlistgurulibur');
         }
 
-        loadsetlistkaryawanlibur();
+        loadsetlistgurulibur();
     });
 </script>

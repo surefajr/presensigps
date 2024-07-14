@@ -35,7 +35,7 @@
                             {{-- untuk naro @role --}}
                             <div class="row">
                                 <div class="col-12">
-                                    <a href="#" class="btn btn-primary" id="btnTambahkaryawan">
+                                    <a href="#" class="btn btn-primary" id="btnTambahguru">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -51,27 +51,16 @@
 
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <form action="/karyawan" method="GET">
+                                    <form action="/guru" method="GET">
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <input type="text" name="nama_karyawan" id="nama_karyawan"
+                                                    <input type="text" name="nama_guru" id="nama_guru"
                                                         class="form-control" placeholder="Nama Guru"
-                                                        value="{{ Request::input('nama_karyawan') }}">
+                                                        value="{{ Request::input('nama_guru') }}">
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-4">
-                                                <div class="form-group">
-                                                    <select name="kode_dept" id="kode_dept" class="form-select">
-                                                        <option value="">Mata Pelajaran</option>
-                                                        @foreach ($departemen as $d)
-                                                            <option
-                                                                {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }}
-                                                                value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div> --}}
+
                                             <div class="col-2">
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary">
@@ -98,23 +87,24 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
+                                                <th>Username</th>
                                                 <th>NUPTK</th>
                                                 <th>Nama</th>
                                                 <th>Jabatan</th>
                                                 <th>No.HP</th>
                                                 <th>Foto</th>
-                                                {{-- <th>Kode Mapel</th> --}}
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($karyawan as $d)
+                                            @foreach ($guru as $d)
                                                 @php
-                                                    $path = Storage::url('uploads/karyawan/' . $d->foto);
+                                                    $path = Storage::url('uploads/guru/' . $d->foto);
                                                 @endphp
                                                 <tr>
-                                                    <td>{{ $loop->iteration + $karyawan->firstItem() - 1 }}</td>
-                                                    <td>{{ $d->nik }}</td>
+                                                    <td>{{ $loop->iteration + $guru->firstItem() - 1 }}</td>
+                                                    <td>{{ $d->username }}</td>
+                                                    <td>{{ $d->nuptk }}</td>
                                                     <td>{{ $d->nama_lengkap }}</td>
                                                     <td>{{ $d->jabatan }}</td>
                                                     <td>{{ $d->no_hp }}</td>
@@ -126,23 +116,23 @@
                                                             <img src="{{ url($path) }}" class="avatar" alt="">
                                                         @endif
                                                     </td>
-                                                    {{-- <td>{{ $d->nama_dept }}</td> --}}
+
                                                     <td>
                                                         <div class="d-flex">
                                                             <div>
                                                                 <a href="#" class="edit btn btn-info btn-sm"
-                                                                    nik="{{ $d->nik }}">
+                                                                    nuptk="{{ $d->nuptk }}">
                                                                     Edit
                                                                 </a>
-                                                                <a href="/konfigurasi/{{ $d->nik }}/setjamkerja"
+                                                                <a href="/konfigurasi/{{ $d->nuptk }}/setjamkerja"
                                                                     class="btn btn-success btn-sm ml-2">
                                                                     Jam Kerja
                                                                 </a>
-                                                                <a href="/karyawan/{{ $d->nik }}/resetpassword"
+                                                                <a href="/guru/{{ $d->nuptk }}/resetpassword"
                                                                     class="btn btn-sm btn-warning">Reset Password</a>
                                                             </div>
                                                             <div>
-                                                                <form action="/karyawan/{{ $d->nik }}/delete"
+                                                                <form action="/guru/{{ $d->nuptk }}/delete"
                                                                     method="POST" style="margin-left:5px;">
                                                                     @csrf
                                                                     <a class="btn btn-danger btn-sm delete-confirm">
@@ -156,7 +146,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    {{ $karyawan->links('vendor.pagination.5') }}
+                                    {{ $guru->links('vendor.pagination.5') }}
                                 </div>
                             </div>
                         </div>
@@ -165,7 +155,7 @@
             </div>
         </div>
     </div>
-    <div class="modal modal-blur fade" id="modal-inputkaryawan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-inputguru" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -173,7 +163,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/karyawan/store" method="POST" id="frmKaryawan" enctype="multipart/form-data">
+                    <form action="/guru/store" method="POST" id="frmGuru" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-12">
@@ -192,8 +182,30 @@
                                             <path d="M7 16l10 0" />
                                         </svg>
                                     </span>
-                                    <input type="text" maxlength="10" id="nik" class="form-control"
-                                        placeholder="NUPTK" name="nik" autocomplete="off">
+                                    <input type="text" maxlength="15" id="username" class="form-control"
+                                        placeholder="Username" name="username" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-icon mb-3">
+                                    <span class="input-icon-addon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-id">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                            <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                            <path d="M15 8l2 0" />
+                                            <path d="M15 12l2 0" />
+                                            <path d="M7 16l10 0" />
+                                        </svg>
+                                    </span>
+                                    <input type="text" maxlength="10" id="nuptk" class="form-control"
+                                        placeholder="NUPTK" name="nuptk" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -227,7 +239,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M12 22l4 -4l-2.5 -11l.993 -2.649a1 1 0 0 0
-                                                                                                                                                                                                                                                                                                                                                                             -.936 -1.351h-3.114a1 1 0 0 0 -.936 1.351l.993 2.649l-2.5 11l4 4z" />
+                                                                                                                                                                                                                                                                                                                                                                                             -.936 -1.351h-3.114a1 1 0 0 0 -.936 1.351l.993 2.649l-2.5 11l4 4z" />
                                             <path d="M10.5 7h3l5 5.5" />
                                         </svg>
                                     </span>
@@ -247,7 +259,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1
-                                                                                                                                                                                                                                                                                                                                                                        -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                                                                                                                                                                                                                                                                                                                                                                        -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                             <path d="M15 7a2 2 0 0 1 2 2" />
                                             <path d="M15 3a6 6 0 0 1 6 6" />
                                         </svg>
@@ -262,17 +274,7 @@
                                 <input type="file" name="foto" class="form-control">
                             </div>
                         </div>
-                        <div class="row mt-2 ">
-                            <div class="col-12">
-                                <select name="kode_dept" id="kode_dept" class="form-select">
-                                    <option value="">Kode Mata Pelajaran</option>
-                                    @foreach ($departemen as $d)
-                                        <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }}
-                                            value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+
                         <div class="row mt-2 ">
                             <div class="col-12">
                                 <div class="form-group">
@@ -298,7 +300,7 @@
     </div>
 
     {{-- modal edit --}}
-    <div class="modal modal-blur fade" id="modal-editkaryawan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-editguru" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -318,28 +320,28 @@
     <script>
         $(function() {
 
-            $("#nik").mask('0000000000');
+            $("#nuptk").mask('0000000000');
             $("#no_hp").mask('0000000000000');
 
-            $("#btnTambahkaryawan").click(function() {
-                $("#modal-inputkaryawan").modal("show");
+            $("#btnTambahguru").click(function() {
+                $("#modal-inputguru").modal("show");
             });
 
             $(".edit").click(function() {
-                var nik = $(this).attr('nik');
+                var nuptk = $(this).attr('nuptk');
                 $.ajax({
                     type: 'POST',
-                    url: '/karyawan/edit',
+                    url: '/guru/edit',
                     cache: false,
                     data: {
                         _token: "{{ csrf_token() }}",
-                        nik: nik
+                        nuptk: nuptk
                     },
                     success: function(respond) {
                         $("#loadeditform").html(respond);
                     }
                 });
-                $("#modal-editkaryawan").modal("show");
+                $("#modal-editguru").modal("show");
             });
 
             $(".delete-confirm").click(function(e) {
@@ -365,21 +367,34 @@
                 });
             });
 
-            $("#frmKaryawan").submit(function() {
-                var nik = $("#nik").val();
+            $("#frmGuru").submit(function() {
+                var username = $("#username").val();
+                var nuptk = $("#nuptk").val();
                 var nama_lengkap = $("#nama_lengkap").val();
                 var jabatan = $("#jabatan").val();
                 var no_hp = $("#no_hp").val();
-                var kode_dept = $("frmKaryawan").find("#kode_dept").val();
-                if (nik == "") {
-                    // alert('Nik Harus Di Isi');
+                // var kode_dept = $("frmGuru").find("#kode_dept").val();
+                if (username == "") {
+                    // alert('nuptk Harus Di Isi');
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'Username Harus diisi !!',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        $("#username").focus();
+                    });
+
+                    return false;
+                } else if (nuptk == "") {
+                    // alert('nuptk Harus Di Isi');
                     Swal.fire({
                         title: 'Warning!',
                         text: 'NUPTK Harus diisi !!',
                         icon: 'warning',
                         confirmButtonText: 'OK'
                     }).then((result) => {
-                        $("#nik").focus();
+                        $("#nuptk").focus();
                     });
 
                     return false;
@@ -413,16 +428,16 @@
                         $("#no_hp").focus();
                     });
                     return false;
-                } else if (kode_dept == "") {
-                    Swal.fire({
-                        title: 'Warning!',
-                        text: 'Mata Pelajaran Harus diisi !!',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        $("#kode_dept").focus();
-                    });
-                    return false;
+                    // } else if (kode_dept == "") {
+                    //     Swal.fire({
+                    //         title: 'Warning!',
+                    //         text: 'Mata Pelajaran Harus diisi !!',
+                    //         icon: 'warning',
+                    //         confirmButtonText: 'OK'
+                    //     }).then((result) => {
+                    //         $("#kode_dept").focus();
+                    //     });
+                    //     return false;
                 }
 
             });

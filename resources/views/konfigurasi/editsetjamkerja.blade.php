@@ -18,12 +18,12 @@
                 <div class="col-12">
                     <table class="table">
                         <tr>
-                            <td>NIK</td>
-                            <td>{{ $karyawan->nik }}</td>
+                            <td>NUPTK</td>
+                            <td>{{ $guru->nuptk }}</td>
                         </tr>
                         <tr>
                             <td>Nama Guru</td>
-                            <td>{{ $karyawan->nama_lengkap }}</td>
+                            <td>{{ $guru->nama_lengkap }}</td>
                         </tr>
                     </table>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="col-5">
                     <form action="/konfigurasi/updatesetjamkerja" method="POST">
                         @csrf
-                        <input type="hidden" name="nik" value="{{ $karyawan->nik }}">
+                        <input type="hidden" name="nuptk" value="{{ $guru->nuptk }}">
                         <table class="table">
                             <thead>
                                 <tr>
