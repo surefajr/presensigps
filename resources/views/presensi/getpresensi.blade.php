@@ -62,9 +62,7 @@ function selisih($jam_masuk, $jam_keluar)
                     <a href="" class="btn btn-primary btn-sm tampilkanpeta" id="{{ $d->id }}">
                         Peta
                     </a>
-                    {{-- <a href="#" class="btn btn-warning btn-sm koreksipresensi">
-                        Koreksi
-                    </a> --}}
+                    
                 </div>
             </td>
         </tr>
@@ -133,27 +131,6 @@ function selisih($jam_masuk, $jam_keluar)
             });
         });
 
-        //  $(".koreksipresensi").click(function(e) {
-        //      e.preventDefault();
-        //      var nuptk = $(this).attr("nuptk");
-        //      var tanggal = "{{ $tanggal }}";
-
-        //      $.ajax({
-        //          type: 'POST',
-        //          url: '/koreksipresensi',
-        //          data: {
-        //              _token: "{{ csrf_token() }}",
-        //              nuptk: nuptk,
-        //              tanggal: tanggal
-        //          },
-        //          cache: false,
-        //          success: function(respond) {
-        //              $("#loadkoreksipresensi").html(respond);
-
-        //          }
-        //      });
-        //      $("#modal-koreksipresensi").modal(
-        //          "show");
-        //  });
+        
     });
 </script>
