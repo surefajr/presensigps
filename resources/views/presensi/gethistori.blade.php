@@ -7,7 +7,8 @@
     .datapresensi {
         margin-left: 10px;
     }
-    .card{
+
+    .card {
         border: 1px solid blue;
     }
 </style>
@@ -29,6 +30,7 @@
                         <h4 style="margin:0px !important">
                             {{ date('d-m-Y', strtotime($d->tgl_presensi)) }}
                         </h4>
+                        <span class="badge bg-success float-right">HADIR</span>
                         <span>
                             {!! $d->jam_in != null ? date('H:i', strtotime($d->jam_in)) : '<span class="text-danger">Belum absen</span>' !!}
                         </span>
@@ -118,6 +120,23 @@
                             {{ date('d-m-Y', strtotime($d->tgl_presensi)) }}
                         </h4>
                         <span>{{ $d->nama_cuti }}</span><br>
+                        <span>{{ $d->keterangan }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @elseif ($d->status == 'l')
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="historicontent">
+                    <div class="iconpresensi">
+                        <ion-icon name="ban-outline" style="font-size:48px;" class="text-danger"></ion-icon>
+                    </div>
+                    <div class="datapresensi">
+                        <h3 style="line-height: 2px">LIBUR - {{ $d->kode_izin }}</h3>
+                        <h4 style="margin:0px !important">
+                            {{ date('d-m-Y', strtotime($d->tgl_presensi)) }}
+                        </h4>
                         <span>{{ $d->keterangan }}</span>
                     </div>
                 </div>

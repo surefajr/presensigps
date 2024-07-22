@@ -181,7 +181,7 @@
             <tr>
                 <td colspan="2" style="text-align:right">
                     @php
-                        // Mendapatkan tanggal saat ini
+                        // Mendapatkan tanggal saat 
                         $tanggal = date('d');
                         // Mendapatkan nama bulan dalam Bahasa Indonesia
                         $nama_bulan = [

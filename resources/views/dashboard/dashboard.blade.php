@@ -4,9 +4,10 @@
         .logout {
             position: absolute;
             color: white;
-            font-size: 30px;
+            font-size: 18px;
             text-decoration: none;
             right: 8px;
+
         }
 
         .logout:hover {
@@ -14,9 +15,12 @@
         }
     </style>
     <div class="section" id="user-section">
-        <a href="/proseslogout" class="logout">
+        <a href="/proseslogout" id="logout" class="logout">
             <ion-icon name="exit-outline"></ion-icon>
+            <br>
+            <span class="logout-text">Logout</span>
         </a>
+
         <div id="user-detail">
             <div class="avatar">
                 @if (!empty(Auth::guard('guru')->user()->foto))
@@ -85,6 +89,7 @@
             </div> --}}
 
     <div class="section mt-2" id="presence-section">
+        <h4 id="location-status"></h4>
         <div class="todaypresence">
             <div class="row">
                 <div class="col-6">
@@ -136,17 +141,18 @@
 
         <div id="rekap">
             <h3>Rekap Absensi {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</h3>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-3">
                     <div class="card">
-                        <div class="card-body text-center "style="padding :12px 12px !important; line-height:0.8rem">
+                        <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem;">
                             <span class="badge bg-danger"
-                                style="position: absolute; top:3px; right:10px; font-size:0.5rem; z-index:999">{{ $rekap->jmlhadir }}</span>
-                            <ion-icon name="checkbox-outline" style="font-size: 1.5rem";
-                                class="text-primary  mb-1"></ion-icon>
-
+                                style="position: absolute; top: 3px; right: 10px; font-size: 0.5rem; z-index: 999;">
+                                {{ $rekap->jmlhadir }}
+                            </span>
+                            <ion-icon name="checkbox-outline" style="font-size: 1.5rem;"
+                                class="text-primary mb-1 icon-hadir"></ion-icon>
                             <br>
-                            <span style="font-size: 0.8rem; font-weight:500">Hadir</span>
+                            <span style="font-size: 0.8rem; font-weight: 500;">Hadir</span>
                         </div>
                     </div>
                 </div>
@@ -186,23 +192,23 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="presencetab mt-2">
-            <div class="tab-pane fade show active" id="pilled" role="tabpanel">
-                <ul class="nav nav-tabs style1" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
-                            Bulan Ini
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
-                            Leaderboard
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            {{-- <div class="presencetab mt-2">
+                <div class="tab-pane fade show active" id="pilled" role="tabpanel">
+                    <ul class="nav nav-tabs style1" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
+                                Bulan Ini
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
+                                Leaderboard
+                            </a>
+                        </li>
+                    </ul>
+                </div> --}}
             <div class="tab-content mt-2" style="margin-bottom:100px;">
                 <div class="tab-pane fade show active" id="home" role="tabpanel">
 
@@ -248,7 +254,8 @@
                                                 class="text-success"></ion-icon>
                                         </div>
                                         <div class="datapresensi">
-                                            <h3 style="line-height: 2px">{{ $d->nama_jam_kerja }}</h3>
+                                            <h3 style="line-height: 2px">{{ $d->nama_jam_kerja }}</h3> <span
+                                                class="badge bg-success float-right">HADIR</span>
                                             <h4 style="margin:0px !important">
                                                 {{ date('d-m-Y', strtotime($d->tgl_presensi)) }}
                                             </h4>
@@ -270,6 +277,7 @@
 
                                                 @endphp
 
+
                                                 @if ($jam_in > $jam_masuk)
                                                     @php
 
@@ -282,6 +290,7 @@
                                                             $jam_presensi,
                                                         );
                                                     @endphp
+
                                                     <span class="danger">Terlambat {{ $jmlterlambat }}
                                                         ({{ $jmlterlambatdesimal }} Jam)
                                                     </span>
@@ -289,7 +298,6 @@
                                                     <span style="color:green">Tepat Waktu</span>
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -356,6 +364,24 @@
                                     </div>
                                 </div>
                             </div>
+                        @elseif ($d->status == 'l')
+                            <div class="card mb-1">
+                                <div class="card-body">
+                                    <div class="historicontent">
+                                        <div class="iconpresensi">
+                                            <ion-icon name="ban-outline" style="font-size:48px;"
+                                                class="text-danger"></ion-icon>
+                                        </div>
+                                        <div class="datapresensi">
+                                            <h3 style="line-height: 2px">LIBUR - {{ $d->kode_izin }}</h3>
+                                            <h4 style="margin:0px !important">
+                                                {{ date('d-m-Y', strtotime($d->tgl_presensi)) }}
+                                            </h4>
+                                            <span>{{ $d->keterangan }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                     @endforeach
                 </div>
@@ -384,4 +410,58 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lokasi target (latitude, longitude) dan radius dalam meter
+            const targetLatitude = -6.194808233812651;
+            const targetLongitude = 106.69094682698608;
+            const radius = 55;
+
+            // Fungsi untuk menghitung jarak antara dua koordinat
+            function calculateDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371e3; // Radius of the Earth in meters
+                const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+                const φ2 = lat2 * Math.PI / 180;
+                const Δφ = (lat2 - lat1) * Math.PI / 180;
+                const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+                const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                const distance = R * c; // in meters
+                return distance;
+            }
+
+            // Fungsi untuk menampilkan status lokasi
+            function displayLocationStatus(distance) {
+                const locationStatusElement = document.getElementById("location-status");
+                if (distance <= radius) {
+                    locationStatusElement.innerHTML =
+                        `<span style="color: green;">Anda berada di dalam radius (${distance.toFixed(2)} meter)</span>`;
+                } else {
+                    locationStatusElement.innerHTML =
+                        `<span style="color: red;">Anda berada di luar radius (${distance.toFixed(2)} meter)</span>`;
+                }
+            }
+
+            // Mendapatkan lokasi pengguna
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLatitude = position.coords.latitude;
+                    const userLongitude = position.coords.longitude;
+                    const distance = calculateDistance(userLatitude, userLongitude, targetLatitude,
+                        targetLongitude);
+                    displayLocationStatus(distance);
+                }, function(error) {
+                    console.error("Error obtaining location", error);
+                });
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        });
+    </script>
+
 @endsection

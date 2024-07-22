@@ -12,6 +12,7 @@ use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\IzinabsenController;
 use App\Http\Controllers\IzinsakitController;
 use App\Http\Controllers\IzincutiController;
+use App\Http\Controllers\IzinliburController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HariliburController;
@@ -76,6 +77,11 @@ Route::middleware(['auth:guru'])->group(function (){
     Route::post('/izincuti/{kode_izin}/update',[IzincutiController::class,'update']);
     Route::post('/izincuti/getmaxcuti',[IzincutiController::class,'getmaxcuti']);
 
+    //izin libur
+    Route::get('/izinlibur',[IzinliburController::class,'create']);
+    Route::post('/izinlibur/store',[IzinliburController::class,'store']);
+    Route::get('/izinlibur/{kode_izin}/edit',[IzinliburController::class,'edit']);
+    Route::post('/izinlibur/{kode_izin}/update',[IzinliburController::class,'update']);
 
     Route::get('/izin/{kode_izin}/showact',[PresensiController::class,'showact']);
     Route::get('/izin/{kode_izin}/delete',[PresensiController::class,'deleteizin']);
@@ -145,9 +151,6 @@ Route::group(['middleware' => ['role:administator|administator 2,user']], functi
      Route::post('/konfigurasi/harilibur/storegurulibur',[HariliburController::class,'storegurulibur']);
      Route::post('/konfigurasi/harilibur/batalkanliburguru',[HariliburController::class,'batalkanliburguru']);
      Route::get('/konfigurasi/harilibur/{kode_libur}/getgurulibur',[HariliburController::class,'getgurulibur']);
-
-
-
 
     //Cuti
     Route::get('/cuti',[CutiController::class,'index']);

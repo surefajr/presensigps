@@ -6,7 +6,7 @@
                 <ion-icon name="arrow-back-circle-outline"></ion-icon>
             </a>
         </div>
-        <div class="pageTitle">Data Izin,Sakit Dan Cuti</div>
+        <div class="pageTitle">Pengajuan Izin</div>
         <div class="right"></div>
     </div>
 @endsection
@@ -45,8 +45,9 @@
             position: absolute;
             right: 20px;
         }
-        .card{
-            border: 1px  solid blue;
+
+        .card {
+            border: 1px solid blue;
         }
     </style>
     <div class="row">
@@ -56,17 +57,19 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="tanggal_mulai">Tanggal Awal</label>
-                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" value="{{ Request('tanggal_mulai') }}">
+                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control"
+                                value="{{ Request('tanggal_mulai') }}">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label for="tanggal_selesai">Tanggal Akhir</label>
-                            <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" value="{{ Request('tanggal_selesai') }}">
+                            <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control"
+                                value="{{ Request('tanggal_selesai') }}">
                         </div>
                     </div>
                 </div>
-                
+
 
                 <div class="row">
                     <div class="col-12">
@@ -79,7 +82,7 @@
 
 
     <div class="row" style="position: fixed; width:100%; margin:auto; overflow-y:scroll; height:430px">
-           <div class="col">
+        <div class="col">
             @foreach ($dataizin as $d)
                 @php
                     if ($d->status == 'i') {
@@ -88,6 +91,8 @@
                         $status = 'Sakit';
                     } elseif ($d->status == 'c') {
                         $status = 'Cuti';
+                    } elseif ($d->status == 'l') {
+                        $status = 'Libur';
                     } else {
                         $status = 'Not Found';
                     }
@@ -105,7 +110,10 @@
                                         style="font-size: 48px; color:rgb(250, 102, 4)"></ion-icon>
                                 @elseif ($d->status == 'c')
                                     <ion-icon name="calendar-number-outline"
-                                        style="font-size: 48px; color:rgb(240, 15, 7)"></ion-icon>
+                                        style="font-size: 48px; color:rgb(224, 240, 7)"></ion-icon>
+                                        @elseif ($d->status == 'l')
+                                    <ion-icon name="ban-outline"
+                                        style="font-size: 48px; color:rgb(255, 2, 2)"></ion-icon>
                                 @endif
                             </div>
                             <div class="datapresensi">
@@ -183,6 +191,11 @@
                 <ion-icon name="calendar-number-outline" role="img" class="md hydrated"
                     aria-label="videocam outline"></ion-icon>
                 <p>Cuti</p>
+            </a>
+            <a class="dropdown-item bg-primary" href="/izinlibur">
+                <ion-icon name="ban-outline" role="img" class="md hydrated"
+                    aria-label="videocam outline"></ion-icon>
+                <p>LIBUR</p>
             </a>
         </div>
     </div>

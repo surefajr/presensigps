@@ -131,7 +131,7 @@
                                                 d="M13 8h3a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h3" />
                                         </svg>
                                     </span>
-                                    
+
                                     <input type="text" maxlength="6" id="kode_jam_kerja" class="form-control"
                                         placeholder="Kode Jam Kerja" name="kode_jam_kerja" autocomplete="off">
                                 </div>
@@ -159,6 +159,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-12">
                                 <div class="input-icon mb-3">
@@ -220,9 +221,10 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-12">
+                                <label for="status_istirahat" class="form-label">Status Istirahat</label>
                                 <div class="form-group">
                                     <select name="status_istirahat" id="status_istirahat" class="form-select">
-                                        <option value="">Istirahat</option>
+                                        <option value="">Pilih Status Istirahat</option>
                                         <option value="1">Ada</option>
                                         <option value="0">Tidak</option>
                                     </select>
@@ -304,8 +306,8 @@
                                             <path d="M22 19l-3 3l-3 -3" />
                                         </svg>
                                     </span>
-                                    <input type="text" id="total_jam" class="form-control" placeholder="Total Jam"
-                                        name="total_jam" autocomplete="off">
+                                    <input type="text" id="total_jam" class="form-control"
+                                        placeholder="Total Jam Kerja" name="total_jam" autocomplete="off">
                                 </div>
                             </div>
                         </div>

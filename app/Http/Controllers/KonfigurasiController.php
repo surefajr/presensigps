@@ -188,6 +188,7 @@ class KonfigurasiController extends Controller
             return redirect('/guru')->with(['warning'=> 'Jam Kerja Gagal Di Update']);
         }
     }
+
 }
 
 

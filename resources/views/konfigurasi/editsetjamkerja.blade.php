@@ -4,7 +4,6 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <!-- Page pre-title -->
                     <h2 class="page-title">
                         Edit Setting Jam Kerja
                     </h2>
@@ -38,6 +37,7 @@
                                 <tr>
                                     <th>Hari</th>
                                     <th>Jam Kerja</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,14 +47,17 @@
                                             <input type="hidden" name="hari[]" value="{{ $s->hari }}">
                                         </td>
                                         <td>
-                                            <select name="kode_jam_kerja[]" id="kode_jam_kerja" class="form-select">
+                                            <select name="kode_jam_kerja[]" id="kode_jam_kerja_{{ $s->hari }}"
+                                                class="form-select">
                                                 <option value="">Pilih Jam Kerja</option>
                                                 @foreach ($jamkerja as $d)
-                                                    <option {{ $d->kode_jam_kerja == $s->kode_jam_kerja ? 'selected' : '' }}
-                                                        value="{{ $d->kode_jam_kerja }}">{{ $d->nama_jam_kerja }}</option>
+                                                    <option value="{{ $d->kode_jam_kerja }}"
+                                                        {{ $d->kode_jam_kerja == $s->kode_jam_kerja ? 'selected' : '' }}>
+                                                        {{ $d->nama_jam_kerja }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>

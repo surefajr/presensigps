@@ -32,6 +32,7 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-12">
+                                        <label for="lokasi_kantor" class="form-label">Titik Koordinat Sekolah</label>
                                         <div class="input-icon mb-3">
                                             <span class="input-icon-addon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -52,6 +53,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
+                                        <label for="radius" class="form-label">Radius</label>
                                         <div class="input-icon mb-3">
                                             <span class="input-icon-addon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

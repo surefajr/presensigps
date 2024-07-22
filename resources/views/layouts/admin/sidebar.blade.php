@@ -324,10 +324,10 @@
                            class="dropdown-menu {{ request()->is(['presensi/laporan', 'presensi/rekap']) ? 'show' : '' }}">
                            <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
-                                   {{-- <a class="dropdown-item {{ request()->is(['presensi/laporan']) ? 'active' : '' }}"
+                                   <a class="dropdown-item {{ request()->is(['presensi/laporan']) ? 'active' : '' }}"
                                        href="/presensi/laporan">
                                        Presensi Guru
-                                   </a> --}}
+                                   </a>
                                    <a class="dropdown-item {{ request()->is(['presensi/rekap']) ? 'active' : '' }}"
                                        href="/presensi/rekap">
                                        Rekapitulasi Presensi
@@ -380,14 +380,14 @@
                                    </a>
                                </div>
                            </div>
-                           {{-- <div class="dropdown-menu-columns">
+                           <div class="dropdown-menu-columns">
                                <div class="dropdown-menu-column">
                                    <a class="dropdown-item {{ request()->is(['konfigurasi/harilibur']) ? 'active' : '' }}"
                                        href="/konfigurasi/harilibur">
                                        Hari Libur
                                    </a>
                                </div>
-                           </div> --}}
+                           </div>
                        </div>
                    </li>
                </ul>

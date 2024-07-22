@@ -18,10 +18,11 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-                            <form action="/presensi/cetakrekap" target="_blank" method="POST">
+                            <form action="/presensi/cetakrekap" id="frmrekap" target="_blank" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-12">
+                                        <label for="bulan" class="form-label">Pilih Bulan</label>
                                         <div class="form-group">
                                             <select name="bulan" id="bulan" class="form-select">
                                                 <option value="">Bulan</option>
@@ -37,6 +38,7 @@
                                 </div>
                                 <div class="row mt-2 ">
                                     <div class="col-12">
+                                        <label for="tahun" class="form-label">Pilih Tahun</label>
                                         <div class="form-group">
                                             <select name="tahun" id="tahun" class="form-select">
                                                 <option value="">Tahun</option>
@@ -55,6 +57,7 @@
                                 </div>
                                 <div class="row mt-2 ">
                                     <div class="col-12">
+                                        <label for="jenis_laporan" class="form-label">Pilih Jenis Laporan</label>
                                         <div class="form-group">
                                             <select name="jenis_laporan" id="jenis_laporan" class="form-select">
                                                 <option value="">Jenis Laporan</option>
@@ -111,3 +114,45 @@
         </div>
     </div>
 @endsection
+@push('myscript')
+    <script>
+        $(function() {
+            $("#frmrekap").submit(function(e) {
+                var bulan = $("#bulan").val();
+                var tahun = $("#tahun").val();
+                var jenis_laporan = $("#jenis_laporan").val();
+                if (bulan == "") {
+                    swal.fire({
+                        title: 'Warning',
+                        text: 'Bulan harus diisi',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        $("#bulan").focus();
+                    });
+                    return false;
+                } else if (tahun == "") {
+                    swal.fire({
+                        title: 'Warning',
+                        text: 'Tahun harus diisi',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        $("#tahun").focus();
+                    });
+                    return false;
+                } else if (jenis_laporan == "") {
+                    swal.fire({
+                        title: 'Warning',
+                        text: 'Jenis Laporan harus dipilih',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        $("#jenis_laporan").focus();
+                    });
+                    return false;
+                }
+            });
+        });
+    </script>
+@endpush

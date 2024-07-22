@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>A4</title>
+    <title>Laporan Presensi Excel</title>
 
     <!-- Normalize or reset CSS with your favorite library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
@@ -24,7 +24,7 @@
             font-weight: bold;
         }
 
-        .tabeldataguru{
+        .tabeldataguru {
             margin-top: 40px;
         }
 
@@ -38,62 +38,37 @@
             border-collapse: collapse;
         }
 
-        .tabelpresensi tr th {
-            border: 1px solid #131212;
-            padding: 8px;
-            background-color: #dbdbdb
-        }
-
-        .tabelpresensi tr td {
+        .tabelpresensi th,
+        .tabelpresensi td {
             border: 1px solid #131212;
             padding: 8px;
             font-size: 12px;
+            vertical-align: middle;
         }
 
         .foto {
-            width: 40px;
-            height: 30px;
+            width: 100%;
+            height: auto;
+            max-width: 120px;
+            max-height: 150px;
         }
     </style>
 </head>
 
-<!-- Set "A5", "A4" or "A3" for class name -->
-<!-- Set also "landscape" if you need -->
-
 <body class="A4">
-    <?php
-    function selisih($jam_masuk, $jam_keluar)
-    {
-        [$h, $m, $s] = explode(':', $jam_masuk);
-        $dtAwal = mktime($h, $m, $s, '1', '1', '1');
-        [$h, $m, $s] = explode(':', $jam_keluar);
-        $dtAkhir = mktime($h, $m, $s, '1', '1', '1');
-        $dtSelisih = $dtAkhir - $dtAwal;
-        $totalmenit = $dtSelisih / 60;
-        $jam = explode('.', $totalmenit / 60);
-        $sisamenit = $totalmenit / 60 - $jam[0];
-        $sisamenit2 = $sisamenit * 60;
-        $jml_jam = $jam[0];
-        return $jml_jam . ':' . round($sisamenit2);
-    }
-    ?>
 
-
-
-
-    <!-- Each sheet element should have the class "sheet" -->
-    <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
     <section class="sheet padding-10mm">
 
         <table style="width:100%">
             <tr>
                 <td style="width:30px">
-
+                    <img src="{{ asset('assets/img/smk.png') }}" width="20" height="20" alt="">
                 </td>
                 <td>
                     <span id="tittle">
                         Laporan Kehadiran Guru<br>
-                        Periode {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}<br>
+                        Periode {{ date('d-m-Y', strtotime($tanggal_mulai)) }} s/d
+                        {{ date('d-m-Y', strtotime($tanggal_selesai)) }}<br>
                         SMK DHARMA SISWA TANGERANG<br>
                     </span>
                     <span>Jl. Teuku Umar No.76, RT.001/RW.001, Nusa Jaya, Kec. Karawaci, Kota Tangerang, Banten
@@ -104,6 +79,10 @@
         <table class="tabeldataguru">
             <tr>
                 <td rowspan="6">
+                    @php
+                        $path = Storage::url('uploads/guru/' . $guru->foto);
+                    @endphp
+                    <alt="" class="foto">
                 </td>
             </tr>
             <tr>
@@ -115,15 +94,11 @@
                 <td>Nama</td>
                 <td>:</td>
                 <td>{{ $guru->nama_lengkap }}</td>
+            </tr>
             <tr>
                 <td>Jabatan</td>
                 <td>:</td>
                 <td>{{ $guru->jabatan }}</td>
-            </tr>
-            <tr>
-                <td>Departemen</td>
-                <td>:</td>
-                <td>{{ $guru->nama_dept }}</td>
             </tr>
             <tr>
                 <td>Telepon</td>
@@ -136,74 +111,90 @@
                 <th>No</th>
                 <th>Tanggal</th>
                 <th>Jam Masuk</th>
+                <th>Foto</th>
                 <th>Jam Pulang</th>
+                <th>Foto</th>
+                <th>Status</th>
                 <th>Keterangan</th>
                 <th>Total Jam Kerja</th>
             </tr>
             @foreach ($presensi as $d)
-                @php
-                    $jamterlambat = selisih('07:00:00', $d->jam_in);
-                @endphp
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ date('d-m-Y', strtotime($d->tgl_presensi)) }}</td>
-                    <td>{{ $d->jam_in }}</td>
-                    <td>{{ $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}</td>
-                    <td>
-                        @if ($d->jam_out != null)
-                            @if ($d->jam_in > '07:00')
+                @if ($d->status == 'h')
+                    @php
+                        $path_in = Storage::url('uploads/absensi/' . $d->foto_in);
+                        $path_out =
+                            $d->jam_out != null
+                                ? Storage::url('uploads/absensi/' . $d->foto_out)
+                                : asset('assets/img/cameraoff.png');
+                        $jamterlambat = hitungjamkerja($d->jam_masuk, $d->jam_in);
+
+                        $tgl_masuk = $d->tgl_presensi;
+                        $jam_masuk = $tgl_masuk . ' ' . $d->jam_in;
+                        $tgl_pulang = $d->jam_out != null ? $tgl_masuk : null;
+                        $jam_pulang = $tgl_pulang != null ? $tgl_pulang . ' ' . $d->jam_out : null;
+                        $jmljamkerja = $tgl_pulang != null ? hitungjamkerja($jam_masuk, $jam_pulang) : 0;
+                    @endphp
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ date('d-m-Y', strtotime($d->tgl_presensi)) }}</td>
+                        <td>{{ $d->jam_in }}</td>
+                        <td><alt="" class="foto"></td>
+                        <td>{{ $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}</td>
+                        <td><alt="" class="foto"></td>
+                        <td style="text-align: center">{{ $d->status }}</td>
+                        <td>
+                            @if ($d->jam_in > $d->jam_masuk)
                                 Terlambat {{ $jamterlambat }}
                             @else
                                 Tepat Waktu
                             @endif
-                        @endif
-                    </td>
-                    <td>
-                        @if ($d->jam_out != null)
-                            @php
-                                $jmljamkerja = selisih($d->jam_in, $d->jam_out);
-                            @endphp
-                            {{ $jmljamkerja }}
-                        @else
-                            0
-                        @endif
-                    </td>
-                </tr>
+                        </td>
+                        <td>{{ $jmljamkerja }}</td>
+                    </tr>
+                @else
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ date('d-m-Y', strtotime($d->tgl_presensi)) }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center">{{ $d->status }}</td>
+                        <td>{{ $d->keterangan }}</td>
+                        <td></td>
+                    </tr>
+                @endif
             @endforeach
         </table>
 
         <table width="100%" style="margin-top: 100px">
             <tr>
                 <td colspan="2" style="text-align:right">
-                    <?php
-                    // Mendapatkan tanggal saat ini
-                    $tanggal = date('d');
-                    
-                    // Mendapatkan nama bulan dalam Bahasa Indonesia
-                    $nama_bulan = [
-                        1 => 'Januari',
-                        2 => 'Februari',
-                        3 => 'Maret',
-                        4 => 'April',
-                        5 => 'Mei',
-                        6 => 'Juni',
-                        7 => 'Juli',
-                        8 => 'Agustus',
-                        9 => 'September',
-                        10 => 'Oktober',
-                        11 => 'November',
-                        12 => 'Desember',
-                    ];
-                    
-                    // Mendapatkan bulan saat ini
-                    $bulan = date('n');
-                    
-                    // Mendapatkan tahun saat ini
-                    $tahun = date('Y');
-                    
-                    // Menampilkan tanggal dengan nama bulan dan tahun
-                    echo 'Tangerang, ' . $tanggal . ' ' . $nama_bulan[$bulan] . ' ' . $tahun;
-                    ?>
+                    @php
+                        // Mendapatkan tanggal saat
+                        $tanggal = date('d');
+                        // Mendapatkan nama bulan dalam Bahasa Indonesia
+                        $nama_bulan = [
+                            1 => 'Januari',
+                            2 => 'Februari',
+                            3 => 'Maret',
+                            4 => 'April',
+                            5 => 'Mei',
+                            6 => 'Juni',
+                            7 => 'Juli',
+                            8 => 'Agustus',
+                            9 => 'September',
+                            10 => 'Oktober',
+                            11 => 'November',
+                            12 => 'Desember',
+                        ];
+                        // Mendapatkan bulan saat ini
+                        $bulan = date('n');
+                        // Mendapatkan tahun saat ini
+                        $tahun = date('Y');
+                        // Menampilkan tanggal dengan nama bulan dan tahun
+                        echo 'Tangerang, ' . $tanggal . ' ' . $nama_bulan[$bulan] . ' ' . $tahun;
+                    @endphp
                     <br>
                     <b>Kepala Sekolah</b>
                 </td>
@@ -212,13 +203,9 @@
                 <td colspan="2" style="text-align:right" height="200px">
                     <u>Sari Lestari Nasution, S.pd</u><br>
                     NIP
-
                 </td>
-
-
             </tr>
         </table>
-
 
     </section>
 

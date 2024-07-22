@@ -2,6 +2,7 @@
     @csrf
     <div class="row">
         <div class="col-12">
+            <label for="nama_user" class="form-label">Nama Administator</label>
             <div class="input-icon ">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -19,6 +20,7 @@
     </div>
     <div class="row mt-1 ">
         <div class="col-12">
+            <label for="email" class="form-label">Email</label>
             <div class="input-icon ">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -34,21 +36,10 @@
             </div>
         </div>
     </div>
-    {{-- <div class="row mt-2 ">
-        <div class="col-12">
-            <div class="form-group">
-                <select name="kode_dept" id="kode_dept" class="form-select">
-                    <option value="">Departemen</option>
-                    @foreach ($departemen as $d)
-                        <option {{ $user->kode_dept == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">
-                            {{ $d->nama_dept }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div> --}}
+
     <div class="row mt-2 ">
         <div class="col-12">
+            <label for="role" class="form-label">Role</label>
             <div class="form-group">
                 <select name="role" id="role" class="form-select">
                     @foreach ($role as $d)
@@ -61,6 +52,7 @@
     </div>
     <div class="row mt-2">
         <div class="col-12">
+            <label for="password" class="form-label">Masukkan Password Baru</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -73,7 +65,7 @@
                     </svg>
                 </span>
                 <input type="password" id="password" value="" class="form-control" name="password"
-                    placeholder="Password" autocomplete="off">
+                    placeholder="Password Baru" autocomplete="off">
             </div>
         </div>
     </div>

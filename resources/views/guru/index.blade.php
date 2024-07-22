@@ -167,6 +167,7 @@
                         @csrf
                         <div class="row">
                             <div class="col-12">
+                                
                                 <div class="input-icon mb-3">
                                     <span class="input-icon-addon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -182,6 +183,7 @@
                                             <path d="M7 16l10 0" />
                                         </svg>
                                     </span>
+
                                     <input type="text" maxlength="15" id="username" class="form-control"
                                         placeholder="Username" name="username" autocomplete="off">
                                 </div>
@@ -239,7 +241,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M12 22l4 -4l-2.5 -11l.993 -2.649a1 1 0 0 0
-                                                                                                                                                                                                                                                                                                                                                                                             -.936 -1.351h-3.114a1 1 0 0 0 -.936 1.351l.993 2.649l-2.5 11l4 4z" />
+                                                                                                                                                                                                                                                                                                                                                                                                             -.936 -1.351h-3.114a1 1 0 0 0 -.936 1.351l.993 2.649l-2.5 11l4 4z" />
                                             <path d="M10.5 7h3l5 5.5" />
                                         </svg>
                                     </span>
@@ -259,7 +261,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1
-                                                                                                                                                                                                                                                                                                                                                                                        -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                                                                                                                                                                                                                                                                                                                                                                                        -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                             <path d="M15 7a2 2 0 0 1 2 2" />
                                             <path d="M15 3a6 6 0 0 1 6 6" />
                                         </svg>

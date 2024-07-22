@@ -181,6 +181,8 @@
                                                     Sakit
                                                 @elseif($d->status == 'c')
                                                     Cuti
+                                                @elseif($d->status == 'l')
+                                                    LIBUR
                                                 @else
                                                     Status Tidak Diketahui
                                                 @endif

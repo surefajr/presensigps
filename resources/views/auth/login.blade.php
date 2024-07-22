@@ -2,9 +2,6 @@
 <html lang="en">
 
 <head>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icons/icon/smk.png">
-    <meta name="theme-color" content="#ffffff">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
@@ -95,13 +92,6 @@
     <script src="{{ asset('assets/js/plugins/jquery-circle-progress/circle-progress.min.js') }}"></script>
     <!-- Base Js File -->
     <script src="{{ asset('assets/js/base.js') }}"></script>
-    <script>
-        window.addEventListener("load", () => {
-            if ("serviceWorker" in navigator) {
-                navigator.serviceWorker.register("service-worker.js")
-            }
-        })
-    </script>
     <script>
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');

@@ -49,6 +49,8 @@ class PresensiController extends Controller
         }
             return $hari_ini;
     }
+    
+
     public function create()
     {
         $hariini = date("Y-m-d");
@@ -191,7 +193,7 @@ class PresensiController extends Controller
     $nuptk = Auth::guard('guru')->user()->nuptk;
     $nama_lengkap = $request->nama_lengkap;
     $no_hp = $request->no_hp;
-    $password = $request->password; // Ambil password tanpa hashing
+    $password = Hash::make($request->password);
     $guru = DB::table('guru')->where('nuptk', $nuptk)->first();
 
     $request->validate([
@@ -455,11 +457,38 @@ class PresensiController extends Controller
     $rekap = $query->get();
 
     if ($request->has('exportexcel')) {
-        $time = date("d-M-Y H:i:s");
-        header("Content-type: application/vnd-ms-excel");
-        header("Content-Disposition: attachment; filename=Rekap Presensi $time.xls");
-        return view('presensi.cetakrekapexcel', compact('bulan', 'tahun', 'namabulan', 'rekap'));
-    }
+        if ($request->jenis_laporan == 2) {
+            // Export detail report
+            $filename = "Rekap_Presensi_Detail_" . date("d-M-Y_H:i:s") . ".xls";
+            $content = view('presensi.cetakrekapdetailexcel', compact('bulan', 'tahun', 'namabulan', 'rekap', 'rangetanggal', 'jmlhari', 'datalibur', 'harilibur'))->render();
+
+            return response()->stream(
+                function () use ($content) {
+                    echo $content;
+                },
+                200,
+                [
+                    'Content-Type' => 'application/vnd.ms-excel',
+                    'Content-Disposition' => "attachment; filename=\"$filename\"",
+                ]
+            );
+        } else {
+            // Default export if jenis_laporan != 2
+            $filename = "Rekap_Presensi_" . date("d-M-Y_H:i:s") . ".xls";
+            $content = view('presensi.cetakrekapexcel', compact('bulan', 'tahun', 'namabulan', 'rekap', 'rangetanggal', 'jmlhari', 'datalibur', 'harilibur'))->render();
+
+            return response()->stream(
+                function () use ($content) {
+                    echo $content;
+                },
+                200,
+                [
+                    'Content-Type' => 'application/vnd.ms-excel',
+                    'Content-Disposition' => "attachment; filename=\"$filename\"",
+                ]
+            );
+        }
+    } 
 
     $data = compact('bulan', 'tahun', 'namabulan', 'rekap', 'rangetanggal', 'jmlhari', 'datalibur', 'harilibur');
     
@@ -469,6 +498,7 @@ class PresensiController extends Controller
         return view('presensi.cetakrekapdetail', $data);
     }
 }
+
 
 
 

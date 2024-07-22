@@ -36,59 +36,54 @@ class GuruController extends Controller
 }
 
 
-public function store(Request $request)
-{
-    $nuptk = $request->nuptk;
-    $username = $request->username;
-    $nama_lengkap = $request->nama_lengkap;
-    $jabatan = $request->jabatan;
-    $no_hp = $request->no_hp;
-    $defaultPassword = '234'; // Password default
-    
-    // Tidak menggunakan hashing untuk password
-    $password = $defaultPassword;
+public function store (Request $request)
+    {
+        //$nik = ($nik);
+        $nuptk = $request->nuptk;
+        $username = $request->username;
+        $nama_lengkap = $request->nama_lengkap;
+        $jabatan = $request->jabatan;
+        $no_hp = $request->no_hp;
+        $password = Hash::make('234');
+        if($request->hasFile('foto')){
+            $foto = $nuptk . "." . $request->file('foto')->getClientOriginalExtension();
+        }else{
+            $foto = null;
+        }
 
-    if ($request->hasFile('foto')) {
-        $foto = $nuptk . "." . $request->file('foto')->getClientOriginalExtension();
-    } else {
-        $foto = null;
-    }
+        $existingUser = DB::table('guru')->where('username', $username)->first();
+        if ($existingUser) {
+            return Redirect::back()->with(['warning' => 'Username ' . $username . ' sudah ada']);
+        }
 
-    $cekusername = DB::table('guru')->where('username', $username)->count();
-    if ($cekusername > 0) {
-        return Redirect::back()->with(['warning' => 'Username ' . $username . ' sudah digunakan.']);
-    }
-
-    try {
-        $data = [
-            'nuptk' => $nuptk,
+        try {
+           $data = [
+            'nuptk'=>$nuptk,
             'username' => $username,
-            'nama_lengkap' => $nama_lengkap,
-            'jabatan' => $jabatan,
-            'no_hp' => $no_hp,
+            'nama_lengkap'=>$nama_lengkap,
+            'jabatan'=>$jabatan,
+            'no_hp'=>$no_hp,
             'foto' => $foto ?: '',
-            'password' => $password
-        ];
-
-        $simpan = DB::table('guru')->insert($data);
-
-        if ($simpan) {
+            'password' =>$password
+           ];
+           $simpan = DB::table('guru')->insert($data);
+           if($simpan){
             if ($request->hasFile('foto')) {
-                $folderPath = 'public/uploads/guru/';
-                $request->file('foto')->storeAs($folderPath, $foto);
+                $folderPath ='public/uploads/guru/';
+                $request->file('foto')->storeAs($folderPath,$foto);
             }
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            return Redirect::back()->with(['success'=>'Data Berhasil Disimpan']);
         }
-    } catch (\Exception $e) {
-        if ($e->getCode() == 23000) {
-            $message = "Data dengan NUPTK " . $nuptk . " sudah ada";
-        } else {
-            $message = "username lebih dari 15 karakter";
+        } catch (\Exception $e) {
+          //  dd($e);
+            if($e->getCode() == 23000){
+                $message = "Data dengan nuptk " . $nuptk . " sudah ada";
+            }else{
+                $message = "nuptk lebih dari 15";
+            }
+            return Redirect::back()->with(['warning'=>'Data Gagal Disimpan ' . $message]);
         }
-        return Redirect::back()->with(['warning' => 'Data Gagal Disimpan: ' . $message]);
     }
-}
-
 
     public function edit (Request $request)
     {
@@ -105,7 +100,6 @@ public function store(Request $request)
     $nama_lengkap = $request->nama_lengkap;
     $jabatan = $request->jabatan;
     $no_hp = $request->no_hp;
-    $password = $request->password; // Mengambil password dari request
     $old_foto = $request->old_foto;
     $foto = $old_foto; // Default value untuk $foto
 
@@ -134,9 +128,9 @@ public function store(Request $request)
             'foto' => $foto ?: ''
         ];
 
-        // Tambahkan password ke data hanya jika diisi dalam request
-        if (!empty($password)) {
-            $data['password'] = $password;
+        
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
         }
 
         $update = DB::table('guru')->where('nuptk', $nuptk)->update($data);
@@ -189,11 +183,10 @@ public function delete($nuptk)
 }
 
 
-
 public function resetpassword($nuptk)
 {
     // Tidak perlu mendekripsi NUPTK
-    $password = '234'; // Password default tanpa hashing
+    $password = Hash::make('234');// Password default tanpa hashing
     $reset = DB::table('guru')->where('nuptk', $nuptk)->update([
         'password' => $password
     ]);

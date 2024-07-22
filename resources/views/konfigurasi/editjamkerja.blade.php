@@ -2,6 +2,7 @@
     @csrf
     <div class="row">
         <div class="col-12">
+            <label for="kode_jam_kerja" class="form-label">Kode Jam Kerja</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -13,7 +14,7 @@
                         <path d="M13 8h3a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h3" />
                     </svg>
                 </span>
-                <label for="kode_jam_kerja">Kode Jam Kerja</label>
+
                 <input type="text" id="kode_jam_kerja_edit" value="{{ $jamkerja->kode_jam_kerja }}"
                     class="form-control" placeholder="Kode Jam Kerja" name="kode_jam_kerja">
             </div>
@@ -21,6 +22,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="nama_jam_kerja" class="form-label">Nama Jam Kerja</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -41,6 +43,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="awal_jam_masuk" class="form-label">Awal Jam Masuk</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -60,6 +63,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="jam_masuk" class="form-label">Jam Masuk</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -78,6 +82,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="akhir_jam_masuk" class="form-label">Akhir Jam Masuk</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -97,9 +102,10 @@
     </div>
     <div class="row mb-2">
         <div class="col-12">
+            <label for="status_istirahat" class="form-label">Status Istirahat</label>
             <div class="form-group">
                 <select name="status_istirahat" id="status_istirahat_edit" class="form-select">
-                    <option value="">Istirahat</option>
+                    <option value="">Pilih Status Istirahat</option>
                     <option value="1">Ada</option>
                     <option value="0">Tidak</option>
                 </select>
@@ -108,6 +114,7 @@
     </div>
     <div class="row editsetjamistirahat">
         <div class="col-12">
+            <label for="awal_istirahat" class="form-label">Awal Istirahat</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -127,6 +134,7 @@
     </div>
     <div class="row editsetjamistirahat">
         <div class="col-12">
+            <label for="akhir_istirahat" class="form-label">Akhir Istirahat</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -146,6 +154,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="jam_pulang" class="form-label">Jam Pulang</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -166,6 +175,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="total_jam" class="form-label">Total Jam Kerja</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

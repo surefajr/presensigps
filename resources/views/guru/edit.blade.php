@@ -2,6 +2,7 @@
     @csrf
     <div class="row">
         <div class="col-12">
+            <label for="username" class="form-label">Username</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -22,6 +23,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="NUPTK" class="form-label">NUPTK</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -42,6 +44,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -59,6 +62,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="jabatan" class="form-label">Jabatan</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -78,6 +82,7 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <label for="no_hp" class="form-label">NO. HP</label>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -98,6 +103,7 @@
     </div>
     <div class="row mt-2 ">
         <div class="col-12">
+            <label for="foto" class="form-label">Ganti Foto</label>
             <input type="file" name="foto" class="form-control">
             <input type="hidden" name="old_foto" value="{{ $guru->foto }}">
         </div>

@@ -72,6 +72,7 @@
                 <th rowspan="2">I</th>
                 <th rowspan="2">S</th>
                 <th rowspan="2">C</th>
+                <th rowspan="2">L</th>
                 <th rowspan="2">A</th>
             </tr>
             <tr>
@@ -90,6 +91,7 @@
                     $jml_izin = 0;
                     $jml_sakit = 0;
                     $jml_cuti = 0;
+                    $jml_libur = 0;
                     $jml_alpa = 0;
                     for ($i = 1; $i <= $jmlhari; $i++) {
                         $tgl = "tgl_" . $i;
@@ -129,6 +131,8 @@
                             $kode_izin = 'S';
                         } elseif ($status == 'c') {
                             $kode_izin = 'C';
+                        }elseif ($status == 'l') {
+                            $kode_izin = 'LIBUR';
                         }
                         $cekhari = gethari(date('D',strtotime($tgl_presensi)));
                         if ($status == "h") {
@@ -145,6 +149,10 @@
                         }
                         if ($status == "c") {
                             $jml_cuti += 1;
+                            $color = "white";
+                        }            
+                        if ($status == "l") {
+                            $jml_libur += 1;
                             $color = "white";
                         }                     
 
@@ -176,6 +184,7 @@
                     <td>{{ $jml_izin ?: '' }}</td>
                     <td>{{ $jml_sakit ?: '' }}</td>
                     <td>{{ $jml_cuti ?: '' }}</td>
+                    <td>{{ $jml_libur ?: '' }}</td>
                     <td>{{ $jml_alpa ?: '' }}</td>
                 </tr>
             @endforeach

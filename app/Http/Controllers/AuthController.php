@@ -12,23 +12,23 @@ use App\Models\Guru;
 class AuthController extends Controller
 {
     public function proseslogin(Request $request)
-{
-    $username = $request->username;
-    $password = $request->password;
-
-    // Ambil data guru berdasarkan NUPTK
-    $guru = Guru::where('username', $username)->first();
-
-    // Verifikasi password
-    if ($guru && $guru->password == $password) {
-        // Jika password cocok, autentikasi berhasil
-        Auth::guard('guru')->login($guru);
-        return redirect('/dashboard');
-    } else {
-        // Jika password tidak cocok atau Username tidak ditemukan
-        return redirect('/')->with(['warning' => 'Username atau Password Salah']);
+    {
+        $username = $request->username;
+        $password = $request->password;
+    
+        // Ambil data guru berdasarkan username
+        $guru = Guru::where('username', $username)->first();
+    
+        // Verifikasi password
+        if ($guru && Hash::check($password, $guru->password)) {
+            // Jika password cocok, autentikasi berhasil
+            Auth::guard('guru')->login($guru);
+            return redirect('/dashboard');
+        } else {
+            // Jika password tidak cocok atau Username tidak ditemukan
+            return redirect('/')->with(['warning' => 'Username atau Password Salah']);
+        }
     }
-}
 
 
     public function proseslogout()
